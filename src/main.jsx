@@ -8,6 +8,7 @@ import MoviePage from './components/MoviePage/MoviePage'
 import AboutUs from './components/AboutUs/AboutUs'
 import ContactUs from './components/ContactUs/ContactUs'
 import Layout from './Layout';
+import Page404 from './components/404Page/Page404'
 
 
 const router = createBrowserRouter(
@@ -21,6 +22,7 @@ const router = createBrowserRouter(
       <Route path='moviedetails/' element={<MovieDetails />}>
         <Route path=':movieid' element={<MovieDetails />}/>
       </Route>
+      <Route path='*' element={<Page404 />} />
     </Route>
   ),
 )
