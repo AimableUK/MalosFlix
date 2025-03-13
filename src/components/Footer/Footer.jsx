@@ -4,7 +4,7 @@ import { NavLink } from 'react-router'
 const Footer = () => {
   return (
     <div className='py-5 px-8 bottom-0'>
-      <p className='mb-7'><h4>Malos<span className='text-primary'>Flix</span></h4>
+      <p className='mb-7'>Malos<span className='text-primary'>Flix </span>
       is a movie database app that allows you to easily search for movies, view their details, and discover new favorites. With a clean and responsive design, you can explore movie titles, posters, release dates, and more. Powered by the OMDB API, MalosFlix provides all the essential information you need about your favorite films, right at your fingertips.</p>
       <ul className='flex justify-center flex-row items-center gap-3'>
         <li>

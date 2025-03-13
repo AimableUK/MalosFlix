@@ -1,46 +1,77 @@
-import React from 'react'
-import { Field, Formik } from 'formik'
-import { Form } from 'react-router'
+import React from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { FormSubmitSchema } from '../../schema/ContactUsSchema';
 
 const ContactUs = () => {
+  async function onSubmit(values, actions) {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    actions.resetForm();
+    console.log(values);
+  }
+
   return (
-    <div className='ContactContainer'>
+    <div className="ContactContainer">
+      {/* ✅ Heading is now at the very top */}
+      <h4 className="flex flex-col text-3xl text-center mb-5">
+        Contact<span className="text-primary"> Us</span>
+      </h4>
 
-      <h4 className='flex justify-center items-center text-3xl'>Contact<span className='text-primary'> Us</span></h4><br />
-
-      <div className='pl-5 mx-auto'>
+      <div className="pl-5 mx-auto w-full">
         <Formik 
-          initialValues={''}
-          validationSchema={}
-          >
-            <Form className='contactForm'>
-              <label htmlFor="name" >Name:</label>
-              <Field type="text" name="name" id="name"/><br/>
+          initialValues={{ 
+            name: '', 
+            email: '', 
+            phone: '', 
+            address: '', 
+            message: '' 
+          }}
+          validationSchema={FormSubmitSchema}
+          onSubmit={onSubmit}
+        > 
+          {({ isSubmitting }) => (
+            <Form className="contactForm" autoComplete="off">
+              
+              <div className="flex flex-col items-start w-full">
+                <label htmlFor="name">Name:</label>
+                <Field type="text" name="name" id="name" className="w-4/5 max-w-xl text-lg px-4 bg-zinc-900 outline-none mb-2 border border-primary rounded-2xl placeholder:text-sm" placeholder="Enter your name, e.g., Jane Doe..." />
+                <ErrorMessage name="name" component="div" className="text-red-500 text-sm" />
+                <br/>
 
-              <label htmlFor="email">Email:</label>
-              <Field type="email" name="name" id="name"/><br/>
+                <label htmlFor="email">Email:</label>
+                <Field type="email" name="email" id="email" className="w-4/5 max-w-xl text-lg px-4 bg-zinc-900 outline-none mb-2 border border-primary rounded-2xl placeholder:text-sm" placeholder="Enter your email, e.g., JaneDoe@example.com..." />
+                <ErrorMessage name="email" component="div" className="text-red-500 text-sm" />
+                <br/>
 
-              <label htmlFor="phone">Phone:</label>
-              <Field type="number" name="phone" id="phone"/> <br/>
+                <label htmlFor="phone">Phone:</label>
+                <Field type="number" name="phone" id="phone" className="w-4/5 max-w-xl text-lg px-4 bg-zinc-900 outline-none mb-2 border border-primary rounded-2xl placeholder:text-sm" placeholder="Enter your phone, e.g., +(1) 071111101..." />
+                <ErrorMessage name="phone" component="div" className="text-red-500 text-sm" />
+                <br/>
 
-              <label htmlFor="address">Address:</label>
-              <Field type="text" name="address" id="address"/> <br/>
+                <label htmlFor="address">Address:</label>
+                <Field type="text" name="address" id="address" className="w-4/5 max-w-xl text-lg px-4 bg-zinc-900 outline-none mb-2 border border-primary rounded-2xl placeholder:text-sm" placeholder="Enter your address, e.g., Madag, Rulond..." />
+                <ErrorMessage name="address" component="div" className="text-red-500 text-sm" />
+                <br/>
 
-              <label htmlFor="message">Message:</label>
-              <Field type="text-area" name="message" id="message"/> <br/>
-              <button 
-                type="submit" 
-                className="block mx-auto pr-5 pl-5 border-2 mt-4 border-primary rounded-3xl p-2 text-sm hover:bg-primary hover:text-black hover:transition-transform ease-in-out duration-300"
-              >
-                  SUBMIT
-              </button>
+                <label htmlFor="message">Message:</label>
+                <Field as="textarea" name="message" id="message" className="w-4/5 max-w-xl text-lg px-4 bg-zinc-900 outline-none mb-2 border border-primary rounded-2xl h-24 placeholder:text-sm" placeholder="Enter your message"/>
+                <ErrorMessage name="message" component="div" className="text-red-500 text-sm" />
+                <br/>
 
-              </Form>
+                <button
+                  disabled={isSubmitting}
+                  type="submit"
+                  className="self-center block pr-5 pl-5 border-2 mt-4 border-primary rounded-3xl p-2 text-sm hover:bg-primary hover:text-black hover:transition-transform ease-in-out duration-300"
+                >
+                  {isSubmitting ? "Submitting..." : "SUBMIT"}
+                </button>
+              </div>
+
+            </Form>
+          )}
         </Formik>
       </div>
-
     </div>
-  )
+  );
 }
 
-export default ContactUs
+export default ContactUs;

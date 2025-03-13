@@ -3,11 +3,10 @@
 @tailwind utilities;
 
 .ContactContainer {
-    @apply flex-col justify-center items-center border-2 border-primary rounded-lg p-5 max-w-3xl m-5;
+    @apply flex flex-col justify-center border-2 border-primary rounded-lg p-5 max-w-3xl m-5 mx-auto;
 }
 
-
-.contactForm input {
-    @apply w-4/5 max-w-xl text-lg px-4 bg-zinc-900 outline-none ml-2 mb-2 border border-primary rounded-2xl;
+.contactForm {
+    @apply flex flex-col items-start w-full;
 }
 
