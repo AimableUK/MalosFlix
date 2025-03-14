@@ -2,12 +2,12 @@ import React from 'react'
 import freeGuy from '../../img/freeGuy.png'
 
 
-const MoviePage = () => {
+const TvShow = () => {
   return (
     <div className='flex flex-col p-10 bg-b bg-gradient-to-b from-black to-gray-900 min-h-screen'>
       <div className='flex flex-col'>
         <div className='flex flex-row justify-between mt-3 mb-2'>
-          <p>Watch Movies</p>
+          <p>Watch TV Shows</p>
           <div>
             <button className='bg-zinc-950 mr-3 pl-4 pr-4 pt-1 pb-1 rounded-3xl hover:border hover:border-primary'>Movies</button>
             <button className='bg-zinc-950 mr-3 pl-4 pr-4 pt-1 pb-1 rounded-3xl hover:border hover:border-primary'>TV Shows</button>
@@ -944,4 +944,4 @@ const MoviePage = () => {
   )
 }
 
-export default MoviePage
+export default TvShow;

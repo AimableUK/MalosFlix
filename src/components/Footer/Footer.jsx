@@ -21,11 +21,11 @@ const Footer = () => {
       </p>
       <ul className="flex justify-center flex-row items-center gap-3">
         <li>
-          <NavLink to="/aboutus">About Us</NavLink>{" "}
+          <NavLink className="hover:text-primary transition-transform ease-in duration-300" to="/aboutus">About Us</NavLink>{" "}
           <span className="ml-2 text-gray-500">|</span>
         </li>
         <li>
-          <NavLink to="/contactus">Contact Us</NavLink>
+          <NavLink className="hover:text-primary transition-transform ease-in duration-300" to="/contactus">Contact Us</NavLink>
         </li>
       </ul>
     </div>

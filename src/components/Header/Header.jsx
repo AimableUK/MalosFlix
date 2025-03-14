@@ -19,16 +19,16 @@ const Header = () => {
         <div className='middleSide flex flex-row'>
           <ul className='flex flex-row gap-3'>
               <li>
-                  <NavLink to="/">HOME</NavLink> <span className='ml-2 text-gray-500'>|</span>
+                  <NavLink className="hover:text-primary transition-transform ease-in duration-300" to="/">HOME</NavLink> <span className='ml-2 text-gray-500'>|</span>
               </li>
               <li>
-                  <NavLink to="/Moviepage">MOVIES</NavLink> <span className='ml-2 text-gray-500'>|</span>
+                  <NavLink className="hover:text-primary transition-transform ease-in duration-300" to="/Moviepage">MOVIES</NavLink> <span className='ml-2 text-gray-500'>|</span>
               </li>
               <li>
-                  <NavLink to="/Moviepage">TV SHOW</NavLink> <span className='ml-2 text-gray-500'>|</span>
+                  <NavLink className="hover:text-primary transition-transform ease-in duration-300" to="/TvShow">TV SHOW</NavLink> <span className='ml-2 text-gray-500'>|</span>
               </li>
               <li>
-                  <NavLink to="/Moviepage">ANIME</NavLink>
+                  <NavLink className="hover:text-primary transition-transform ease-in duration-300" to="/Anime">ANIME</NavLink>
               </li>
           </ul>
         </div>
@@ -70,7 +70,7 @@ const Header = () => {
           <div className='rightSide flex flex-row items-center'>
 
             <div className='flex flex-row items-center'>
-                <input className='text-primary outline-none  border-2 rounded-3xl p-1 pl-6 placeholder:text-primary relative border-primary' type="text" name="search" id="seach" placeholder='Search...'/>
+                <input className='text-primary outline-none  border-2 rounded-3xl p-1 pl-6 placeholder:text-primary relative border-primary bg-inherit' type="text" name="search" id="seach" placeholder='Search...'/>
                 <svg className="block absolute size-6 ml-1 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>

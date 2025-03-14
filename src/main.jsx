@@ -9,6 +9,8 @@ import AboutUs from './components/AboutUs/AboutUs'
 import ContactUs from './components/ContactUs/ContactUs'
 import Layout from './Layout';
 import Page404 from './components/404Page/Page404'
+import Anime from './components/MoviePage/Anime';
+import TvShow from './components/MoviePage/TvShow';
 
 
 const router = createBrowserRouter(
@@ -17,6 +19,8 @@ const router = createBrowserRouter(
       <Route path='' element={<Home />} />
       <Route path='moviedetails' element={<MovieDetails />} />
       <Route path='Moviepage' element={<MoviePage />} />
+      <Route path='Anime' element={<Anime />} />
+      <Route path='TvShow' element={<TvShow />} />
       <Route path='aboutus' element={<AboutUs />} />
       <Route path='contactus' element={<ContactUs />} />
       <Route path='moviedetails/' element={<MovieDetails />}>
