@@ -8,7 +8,14 @@ const Page404 = () => {
     <div className='flex flex-col items-center'>
       <p className='text-red-400 text-9xl'>404</p>
       <p className='font-homenaje text-3xl'>PAGE NOT FOUND</p>
-      <img src={page404gif} />
+      <img 
+        src={page404gif} 
+        className="pointer-events-none select-none" 
+        onContextMenu={(e) => e.preventDefault()} 
+        onDragStart={(e) => e.preventDefault()} 
+        alt="404 Not Found"
+      />
+
     </div>
   )
 }
