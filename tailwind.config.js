@@ -17,7 +17,8 @@ export default {
         body: ['Imprima'],
         homenaje: ['homenaje'],
         frenchCanon: ['IM Fell French Canon'],
-        electrolize: ['electrolize']
+        electrolize: ['electrolize'],
+        Gurajada: ['Gurajada']
       }
     },
   },

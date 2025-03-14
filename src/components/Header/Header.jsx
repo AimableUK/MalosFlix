@@ -59,7 +59,7 @@ const Header = () => {
 
 
       {/* Mobile heder */}
-      <div className='flex md:hidden flex-col justify-center p-2 gap-3 mt-4'>
+      <div className='flex md:hidden flex-col justify-center p-2 gap-3'>
         <div className='flex flex-row justify-between items-center gap-1'>
 
           <div className='leftSide flex flex-row ml-2 items-center'>
