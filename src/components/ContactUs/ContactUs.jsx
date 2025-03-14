@@ -10,7 +10,7 @@ const ContactUs = () => {
   }
 
   return (
-    <div className="ContactContainer">
+    <div className="ContactContainer ">
       {/* ✅ Heading is now at the very top */}
       <h4 className="flex flex-col text-3xl text-center mb-5">
         Contact<span className="text-primary"> Us</span>

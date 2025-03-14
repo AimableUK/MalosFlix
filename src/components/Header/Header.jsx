@@ -7,7 +7,7 @@ const Header = () => {
     <>
 
       {/* Big Screens */}
-      <div className='hidden md:flex flex-row justify-between items-center p-2'>
+      <div className='hidden md:flex flex-row justify-between items-center p-4'>
 
         {/* left side */}
         <div className='leftSide flex flex-row ml-2 items-center'>
@@ -37,7 +37,7 @@ const Header = () => {
         <div className='rightSide flex flex-row items-center'>
 
             <div className='flex flex-row items-center'>
-                <input className='text-primary outline-none bg-zinc-900  border-2 rounded-3xl p-1 pl-6 placeholder:text-primary relative border-primary' type="text" name="search" id="seach" placeholder='Search...'/>
+                <input className='text-primary outline-none border-2 rounded-3xl p-1 pl-6 placeholder:text-primary relative border-primary bg-inherit' type="text" name="search" id="seach" placeholder='Search...'/>
                 <svg className="block absolute size-6 ml-1 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
@@ -59,10 +59,10 @@ const Header = () => {
 
 
       {/* Mobile heder */}
-      <div className='flex md:hidden flex-col justify-center p-2 gap-3'>
+      <div className='flex md:hidden flex-col justify-center p-2 gap-3 mt-4'>
         <div className='flex flex-row justify-between items-center gap-1'>
 
-          <div className='leftSide flex flex-row ml-2 items-center '>
+          <div className='leftSide flex flex-row ml-2 items-center'>
             <img src={logo} alt="logo" className='w-10 h-10 mr-2'/>
             <h4>Malos<span className='text-primary'>Flix</span></h4>
           </div>
@@ -70,7 +70,7 @@ const Header = () => {
           <div className='rightSide flex flex-row items-center'>
 
             <div className='flex flex-row items-center'>
-                <input className='text-primary outline-none bg-zinc-900  border-2 rounded-3xl p-1 pl-6 placeholder:text-primary relative border-primary' type="text" name="search" id="seach" placeholder='Search...'/>
+                <input className='text-primary outline-none  border-2 rounded-3xl p-1 pl-6 placeholder:text-primary relative border-primary' type="text" name="search" id="seach" placeholder='Search...'/>
                 <svg className="block absolute size-6 ml-1 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>

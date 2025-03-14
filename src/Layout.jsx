@@ -1,16 +1,27 @@
-import React from 'react'
-import {Outlet} from 'react-router-dom'
-import Header from './components/Header/Header'
-import Footer from './components/Footer/Footer'
+import React from "react";
+import { Outlet, useLocation } from "react-router-dom";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import LandingBg from "../src/img/LandingBg.png";
 
 const Layout = () => {
-  return (
-    <div className=' font-body bg-zinc-900 text-gray-200 p-3'>
-        <Header />
-        <Outlet />       
-        <Footer />
-    </div>
-  )
-}
+  const location = useLocation();
+  const isHome = location.pathname === "/";
 
-export default Layout
+  return (
+    <div
+      className={`font-body text-gray-200 p-3 min-h-screen ${
+        isHome
+          ? ""
+          : "bg-gradient-to-b from-black to-gray-900"
+      }`}
+      style={isHome ? { backgroundImage: `url(${LandingBg})`, backgroundSize: "cover", backgroundPosition: "center" } : {}}
+    >
+      <Header />
+      <Outlet />
+      <Footer />
+    </div>
+  );
+};
+
+export default Layout;

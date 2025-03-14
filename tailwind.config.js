@@ -14,7 +14,10 @@ export default {
         }
       },
       fontFamily: {
-        body: ['Imprima']
+        body: ['Imprima'],
+        homenaje: ['homenaje'],
+        frenchCanon: ['IM Fell French Canon'],
+        electrolize: ['electrolize']
       }
     },
   },
