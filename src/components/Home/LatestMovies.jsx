@@ -9,41 +9,42 @@ metronome.register()
 
 const API_KEY = "971af93c";
 
-// Fetch function
-const fetcher = (url) => fetch(url).then((res) => res.json());
 
+const fetcher = (url) => fetch(url).then((res) => res.json());
 const useLatestMovies = () => {
-    // Fetch list of latest movies first
+
     const { data, error } = useSWR(
         `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=1`,
         fetcher,
         { refreshInterval: 5000 }
     );
 
-    // After fetching the movie list, fetch details for each movie
-    const detailedMovies = data?.Search ? data.Search.map(movie => 
-        fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}`)
-            .then(res => res.json())
-            .then(details => ({
-                ...movie,
-                ...details // Merge details like imdbRating, Runtime, etc.
-            }))
-    ) : [];
-
     const [movies, setMovies] = React.useState([]);
-    
-    // Wait for all movie details to load
+
     React.useEffect(() => {
-        Promise.all(detailedMovies)
-            .then(results => setMovies(results))
-            .catch(() => setMovies([])); // Handle any error in fetching details
+        if (data?.Search) {
+
+            const detailedMovies = data.Search.map((movie) =>
+                fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}`)
+                    .then((res) => res.json())
+                    .then((details) => ({
+                        ...movie,
+                        ...details,
+                    }))
+            );
+
+
+            Promise.all(detailedMovies)
+                .then((results) => setMovies(results))
+                .catch(() => setMovies([]));
+        }
     }, [data]);
 
     return {
         movies,
         loading: !data && !error,
         error,
-    };
+    };  
 };
 
 
@@ -61,7 +62,7 @@ const LatestMovies = () => {
         window.scrollTo({ top:0, behavior:'smooth'})
   
         navigate(`/moviedetails/${movie.imdbID}`);
-    };
+      };
 
     return (
         <div className="flex flex-col p-10 bg-gradient-to-b from-black to-gray-900 min-h-screen">
