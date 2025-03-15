@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import useSWR from "swr";
 import PlayLogo from "../../assets/MalosFlixLogo.png";
-import placeholderImage from "../../assets/imageplaceholder.png"; // Import placeholder image
+import placeholderImage from "../../assets/imageplaceholder.png";
 import { metronome } from 'ldrs';
 import { useNavigate } from "react-router";
 
-metronome.register()
+metronome.register();
 
 const API_KEY = "971af93c";
 
@@ -18,63 +18,61 @@ const fetchAnimeDetails = (imdbID) => {
         .then((res) => res.json());
 };
 
-const useAnime = () => {
-    const movieUrls = [
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=movie&page=1`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=movie&page=2`,
-    ];
-
-    const seriesUrls = [
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=series&page=1`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=series&page=2`,
-    ];
-
-    const { data: movieData, error: movieError } = useSWR(movieUrls, async (urls) => {
-        const responses = await Promise.all(urls.map((url) => fetcher(url)));
-        return responses.flatMap((response) => response.Search || []);
-    });
-
-    const { data: seriesData, error: seriesError } = useSWR(seriesUrls, async (urls) => {
+const useAnime = (urls) => {
+    const { data, error } = useSWR(urls, async (urls) => {
         const responses = await Promise.all(urls.map((url) => fetcher(url)));
         return responses.flatMap((response) => response.Search || []);
     });
 
     return {
-        animes: [...(movieData || []), ...(seriesData || [])],
-        loading: !movieData && !seriesData && !(movieError || seriesError),
-        error: movieError || seriesError,
+        animes: data || [],
+        loading: !data && !error,
+        error,
     };
 };
 
 const AnimePage = () => {
     const navigate = useNavigate();
-    const { animes, loading, error } = useAnime();
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [animes, setAnimes] = useState([]);
+    const [page, setPage] = useState(1);
+    const [urls, setUrls] = useState([
+        `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=movie&page=1`,
+        `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=movie&page=2`,
+    ]);
 
-    const [animeDetails, setAnimeDetails] = useState({});
+    const { animes: newAnimes, loading, error } = useAnime(urls);
+
+    const loadMoreAnimes = (e) => {
+        e.preventDefault();
+
+        setLoadingMore(true);
+
+        setPage((prevPage) => {
+            const newPage = prevPage + 2;
+
+            setUrls((prevUrls) => [
+                ...prevUrls,
+                `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=movie&page=${newPage - 1}`,
+                `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=movie&page=${newPage}`,
+            ]);
+
+            return newPage;
+        });
+    };
 
     useEffect(() => {
-        // Fetch additional details for each anime (like runtime and rating)
-        if (animes.length > 0) {
-            animes.forEach(async (anime) => {
-                if (anime?.imdbID && !animeDetails[anime.imdbID]) {
-                    const details = await fetchAnimeDetails(anime.imdbID);
-                    setAnimeDetails((prevDetails) => ({
-                        ...prevDetails,
-                        [anime.imdbID]: details,
-                    }));
-                }
-            });
+        if (newAnimes.length > 0) {
+            setAnimes((prevAnimes) => [...prevAnimes, ...newAnimes]);
+            setLoadingMore(false);
         }
-    }, [animes]);
-
-    if (loading) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
-    if (error) return <p>Error fetching Anime...</p>;
+    }, [newAnimes]);
 
     const handleMovie = (movie) => {
         if (!movie?.imdbID) return;
-  
-        window.scrollTo({ top:0, behavior:'smooth'})
-  
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
         navigate(`/moviedetails/${movie.imdbID}`);
     };
 
@@ -89,6 +87,9 @@ const AnimePage = () => {
         return isNaN(runtimeInMinutes) || runtimeInMinutes > 20;  // Only show movies with more than 20 minutes
     };
 
+    if (loading && page === 1) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
+    if (error) return <p>Error fetching Anime...</p>;
+
     return (
         <div className="flex flex-col p-10 bg-gradient-to-b from-black to-gray-900 min-h-screen">
             <div className="flex flex-col">
@@ -98,9 +99,8 @@ const AnimePage = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
-                {animes.slice(0, 36).map((anime) => (
-                    // Only render cards where the Poster exists and runtime is above threshold
-                    anime.Poster !== "N/A" && filterRuntime(animeDetails[anime.imdbID]?.Runtime) ? (
+                {animes.map((anime) => (
+                    anime.Poster !== "N/A" && filterRuntime(anime?.Runtime) ? (
                         <div 
                             className="card p-2 flex flex-col" 
                             key={anime.imdbID}
@@ -129,7 +129,7 @@ const AnimePage = () => {
                             <div className="p-2 flex flex-row justify-between items-center">
                                 <p className="border px-2 flex-shrink-0">HD</p>
                                 <div className="flex flex-row items-center gap-x-2 overflow-hidden">
-                                    <p className="whitespace-nowrap">{animeDetails[anime.imdbID]?.Runtime || 'N/A'}</p>
+                                    <p className="whitespace-nowrap">{anime?.Runtime || 'N/A'}</p>
                                     <p className="flex items-center">
                                         <svg
                                             className="text-primary size-4"
@@ -143,13 +143,23 @@ const AnimePage = () => {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        {animeDetails[anime.imdbID]?.imdbRating || 'N/A'}
+                                        {anime?.imdbRating || 'N/A'}
                                     </p>
                                 </div>
                             </div>
                         </div>
-                    ) : null  // Don't render the card if Poster is not available or runtime is too short
+                    ) : null
                 ))}
+            </div>
+
+            <div className="flex justify-center">
+                <button
+                    className="border-2 border-primary rounded-3xl mt-5 p-2 pl-5 pr-5 text-sm hover:bg-primary active:opacity-60 hover:text-black hover:transition-transform ease-in-out duration-300"
+                    onClick={loadMoreAnimes}
+                    disabled={loadingMore}
+                >
+                    {loadingMore ? <p>Loading <l-metronome size="20" speed="1.6" color="white"></l-metronome></p> : "LOAD MORE"}
+                </button>
             </div>
         </div>
     );
