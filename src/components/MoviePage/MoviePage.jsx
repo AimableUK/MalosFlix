@@ -1,34 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import useSWR from "swr";
 import PlayLogo from "../../assets/MalosFlixLogo.png";
-import { metronome } from 'ldrs'
+import { metronome } from 'ldrs';
 import { useNavigate } from "react-router";
 
-metronome.register()
+metronome.register();
 const API_KEY = "971af93c";
 
-// Fetch function
+
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-const useMovies = () => {
-    const urls = [
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=1`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=2`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=3`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=4`,
-    ];
-
+const useMovies = (urls) => {
     const { data, error } = useSWR(urls, async (urls) => {
         const responses = await Promise.all(urls.map((url) => fetcher(url)));
         const movies = responses.flatMap((response) => response.Search || []);
-        
-        // Fetch full details for each movie
+
         const movieDetails = await Promise.all(
             movies.map((movie) =>
                 fetcher(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}`)
             )
         );
-        
+
         return movieDetails;
     });
 
@@ -40,21 +32,59 @@ const useMovies = () => {
 };
 
 const MoviePage = () => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const { movies, loading, error } = useMovies();
+    const [loadingMore, setLoadingMore] = useState(false)
+    const [movies, setMovies] = React.useState([]);
+    const [page, setPage] = React.useState(1);
+    const [urls, setUrls] = React.useState([
+        `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=1`,
+        `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=2`,
+    ]);
 
-    if (loading) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
+    const { movies: newMovies, loading, error } = useMovies(urls);
+
+    const loadMoreMovies = (e) => {
+        e.preventDefault();
+        
+        setLoadingMore(true)
+        
+
+        setPage(prevPage => {
+            const newPage = prevPage + 2;
+
+            setUrls((prevUrls) => [
+                ...prevUrls,
+                `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=${newPage - 1}`,
+                `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=${newPage}`,
+            ]);
+            
+            return newPage;
+        });
+    };
+
+    React.useEffect(() => {
+        if (newMovies.length > 0) {
+            setMovies((prevMovies) => [...prevMovies, ...newMovies]);
+            setLoadingMore(false);
+        }
+   }, [newMovies]);
+
+    React.useEffect(() => {
+        if (newMovies.length > 0) {
+            setMovies((prevMovies) => [...prevMovies, ...newMovies]);
+        }
+    }, [newMovies]);
+
+    if (loading && page === 1) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
     if (error) return <p>Error fetching movies...</p>;
 
     const handleMovie = (movie) => {
         if (!movie?.imdbID) return;
-  
-        window.scrollTo({ top:0, behavior:'smooth'})
-  
+        window.scrollTo({ top: 0, behavior: 'smooth' });
         navigate(`/moviedetails/${movie.imdbID}`);
     };
-    
+
     return (
         <div className="flex flex-col p-10 bg-gradient-to-b from-black to-gray-900 min-h-screen">
             <div className="flex flex-col">
@@ -64,7 +94,7 @@ const MoviePage = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
-                {movies.slice(0, 36).map((movie) => (
+                {movies.map((movie) => (
                     <div className="card p-2 flex flex-col" key={movie.imdbID}>
                         <div className="relative group">
                             <div className="relative w-full h-64">
@@ -109,6 +139,16 @@ const MoviePage = () => {
                         </div>
                     </div>
                 ))}
+            </div>
+
+            <div className="flex justify-center">
+                <button
+                    className="border-2 border-primary rounded-3xl mt-5 p-2 pl-5 pr-5 text-sm hover:bg-primary active:opacity-60 hover:text-black hover:transition-transform ease-in-out duration-300"
+                    onClick={loadMoreMovies}
+                    disabled={loadingMore}
+                >
+                    {loadingMore ?  <p>Loading <l-metronome size="20" speed="1.6" color="white"></l-metronome></p>: "LOAD MORE"}
+                </button>
             </div>
         </div>
     );
