@@ -1,6 +1,9 @@
 import React from "react";
 import useSWR from "swr";
 import PlayLogo from "../../assets/MalosFlixLogo.png";
+import { metronome } from 'ldrs'
+
+metronome.register()
 
 const API_KEY = "971af93c";
 
@@ -24,7 +27,7 @@ const useLatestMovies = () => {
 const LatestMovies = () => {
     const { movies, loading, error } = useLatestMovies();
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
     if (error) return <p>Error fetching latest movies.</p>;
 
     return (

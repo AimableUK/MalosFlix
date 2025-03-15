@@ -2,6 +2,12 @@ import React from 'react'
 import PlayLogo from '../../assets/MalosFlixLogo.png'
 import useSWR from 'swr'
 
+import { metronome } from 'ldrs'
+
+metronome.register()
+
+
+
 const API_KEY = "971af93c";
 
 const RECOMMENDED_MOVIES = [
@@ -31,7 +37,8 @@ const useRecommendedMovies = () => {
 const RecommendedMovies = () => {
     const { movies, loading, error } = useRecommendedMovies();
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
+
     if (error) return <p>Error fetching recommended movies.</p>;
 
     return (

@@ -1,6 +1,9 @@
 import React from "react";
 import useSWR from "swr";
 import PlayLogo from "../../assets/MalosFlixLogo.png";
+import { metronome } from 'ldrs'
+
+metronome.register()
 
 const API_KEY = "971af93c";
 
@@ -38,7 +41,7 @@ const useAnime = () => {
 const AnimePage = () => {
     const { animes, loading, error } = useAnime();
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
     if (error) return <p>Error fetching Anime...</p>;
 
     return (

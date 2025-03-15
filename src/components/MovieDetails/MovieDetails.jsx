@@ -2,6 +2,9 @@ import React from 'react'
 import profpic from '../../img/profpic.png'
 import useSWR from 'swr';
 import PlayLogo from '../../assets/MalosFlixLogo.png'
+import { metronome } from 'ldrs'
+
+metronome.register()
 
 
 const API_KEY = "971af93c";
@@ -15,27 +18,32 @@ const RECOMMENDED_MOVIES = [
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 
-const useRecommendedMovies =() => {
+const useRecommendedMovies = () => {
+  const { data, error } = useSWR(
+      RECOMMENDED_MOVIES.map((id) => `http://www.omdbapi.com/?apikey=${API_KEY}&i=${id}`),
+      async (urls) => {
+          const responses = await Promise.all(urls.map((url) => fetcher(url)));
+          return responses.filter((movie) => movie.Poster && movie.Title && movie.Year); // Filter out invalid responses
+      },
+      { refreshInterval: 5000 } // Optional: Set an interval to refresh the data every 5 seconds
+  );
 
-    const fetchMovies = RECOMMENDED_MOVIES.map((id) =>
-        useSWR(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${id}`, fetcher, { refreshInterval: 5000 })
-    );
+  const loading = !data && !error; // Determine if it's loading
+  const movies = data || []; // Set movies data or empty array if none available
 
-    const movies = fetchMovies.map(({data}) => data).filter(Boolean)
+  return {
+      movies,
+      loading,
+      error,
+  };
+};
 
-    const loading = fetchMovies.some(({data}) => !data)
-
-    const error = fetchMovies.some(({ error }) => error)
-
-    return { movies, loading, error}
-
-}
 
 const MovieDetails = () => {
 
   const { movies, loading, error } = useRecommendedMovies();
 
-  if(loading) return <p>Loading</p>
+  if (loading) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
   if(error) return <p>Error fetching recommended movies.</p>
 
   return (
