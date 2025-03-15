@@ -10,3 +10,6 @@
     @apply flex flex-col items-start w-full;
 }
 
+.card {
+    @apply cursor-pointer
+}
