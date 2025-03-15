@@ -7,60 +7,40 @@ const API_KEY = "971af93c";
 // Fetch function
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-const useShows = () => {
-    const urls = [
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=1`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=2`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=3`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=4`,
-    ];
-
-    // Fetch multiple pages in parallel
-    const { data, error } = useSWR(urls, async (urls) => {
-        const responses = await Promise.all(urls.map((url) => fetcher(url)));
-        return responses.flatMap((response) => response.Search || []);
-    });
+const useLatestSeries = () => {
+    const { data, error } = useSWR(
+        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2023&page=1`,
+        fetcher,
+        { refreshInterval: 5000 }
+    );
 
     return {
-        shows: data || [],
+        series: data?.Search || [],
         loading: !data && !error,
         error,
     };
 };
 
-const TVShowsPage = () => {
-    const { shows, loading, error } = useShows();
+const LatestSeries = () => {
+    const { series, loading, error } = useLatestSeries();
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error fetching TV shows...</p>;
+    if (error) return <p>Error fetching latest series.</p>;
 
     return (
         <div className="flex flex-col p-10 bg-gradient-to-b from-black to-gray-900 min-h-screen">
-            <div className="flex flex-col">
-                <div className="flex flex-row justify-between mt-3 mb-2">
-                    <p className="text-primary text-lg">Watch TV Shows</p>
-                    <div>
-                        <button className="bg-zinc-950 mr-3 pl-4 pr-4 pt-1 pb-1 rounded-3xl hover:border hover:border-primary">
-                            Movies
-                        </button>
-                        <button className="bg-zinc-950 mr-3 pl-4 pr-4 pt-1 pb-1 rounded-3xl hover:border hover:border-primary">
-                            TV Shows
-                        </button>
-                        <button className="bg-zinc-950 mr-3 pl-4 pr-4 pt-1 pb-1 rounded-3xl hover:border hover:border-primary">
-                            Anime
-                        </button>
-                    </div>
-                </div>
+            <div className="flex flex-col mt-5">
+                <p className="text-primary text-lg">Latest Series</p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
-                {shows.slice(0, 36).map((show) => (
-                    <div className="card p-2 flex flex-col" key={show.imdbID}>
+                {series.slice(0, 15).map((seriesItem) => (
+                    <div className="card p-2 flex flex-col" key={seriesItem.imdbID}>
                         <div className="relative group">
                             <div className="relative w-full h-64">
                                 <img
-                                    src={show.Poster}
-                                    alt={show.Title}
+                                    src={seriesItem.Poster}
+                                    alt={seriesItem.Title}
                                     className="w-full h-full object-cover rounded-md group-hover:opacity-30 transition-opacity duration-100"
                                 />
                                 <img
@@ -71,14 +51,18 @@ const TVShowsPage = () => {
                         </div>
 
                         <div className="flex flex-row justify-between items-center mt-4">
-                            <p className="truncate font-electrolize text-white">{show.Title}</p>
-                            <p className="whitespace-nowrap text-primary">{show.Year}</p>
+                            <p className="truncate font-electrolize text-white">
+                                {seriesItem.Title}
+                            </p>
+                            <p className="whitespace-nowrap text-primary">
+                                {seriesItem.Year}
+                            </p>
                         </div>
 
                         <div className="p-2 flex flex-row justify-between items-center">
                             <p className="border px-2 flex-shrink-0">HD</p>
                             <div className="flex flex-row items-center gap-x-2 overflow-hidden">
-                                <p className="whitespace-nowrap">{show.Runtime}</p>
+                                <p className="whitespace-nowrap">{seriesItem.Runtime}</p>
                                 <p className="flex items-center">
                                     <svg
                                         className="text-primary size-4"
@@ -92,7 +76,7 @@ const TVShowsPage = () => {
                                             clipRule="evenodd"
                                         />
                                     </svg>
-                                    {show.imdbRating}
+                                    {seriesItem.imdbRating}
                                 </p>
                             </div>
                         </div>
@@ -103,4 +87,4 @@ const TVShowsPage = () => {
     );
 };
 
-export default TVShowsPage;
+export default LatestSeries;
