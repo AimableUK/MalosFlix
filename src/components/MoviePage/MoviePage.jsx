@@ -2,6 +2,7 @@ import React from "react";
 import useSWR from "swr";
 import PlayLogo from "../../assets/MalosFlixLogo.png";
 import { metronome } from 'ldrs'
+import { useNavigate } from "react-router";
 
 metronome.register()
 const API_KEY = "971af93c";
@@ -39,21 +40,22 @@ const useMovies = () => {
 };
 
 const MoviePage = () => {
+    const navigate = useNavigate()
+
     const { movies, loading, error } = useMovies();
 
     if (loading) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
     if (error) return <p>Error fetching movies...</p>;
 
+    const handleMovie = (movie) => {
+        if (!movie?.imdbID) return;
+        navigate(`/moviedetails/${movie.imdbID}`);
+    };
     return (
         <div className="flex flex-col p-10 bg-gradient-to-b from-black to-gray-900 min-h-screen">
             <div className="flex flex-col">
                 <div className="flex flex-row justify-between mt-3 mb-2">
                     <p className="text-primary text-lg">Watch Movies</p>
-                    <div>
-                        <button className="bg-zinc-950 mr-3 px-4 py-1 rounded-3xl hover:border hover:border-primary">Movies</button>
-                        <button className="bg-zinc-950 mr-3 px-4 py-1 rounded-3xl hover:border hover:border-primary">TV Shows</button>
-                        <button className="bg-zinc-950 mr-3 px-4 py-1 rounded-3xl hover:border hover:border-primary">Anime</button>
-                    </div>
                 </div>
             </div>
 
@@ -66,6 +68,7 @@ const MoviePage = () => {
                                     src={movie.Poster}
                                     alt={movie.Title}
                                     className="w-full h-full object-cover rounded-md group-hover:opacity-30 transition-opacity duration-100"
+                                    onClick={() => handleMovie(movie)}
                                 />
                                 <img
                                     src={PlayLogo}

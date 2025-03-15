@@ -1,18 +1,15 @@
-import React from 'react'
-import PlayLogo from '../../assets/MalosFlixLogo.png'
-import useSWR from 'swr'
+import React from 'react';
+import PlayLogo from '../../assets/MalosFlixLogo.png';
+import useSWR from 'swr';
+import { metronome } from 'ldrs';
+import { useNavigate } from 'react-router-dom';
 
-import { metronome } from 'ldrs'
-
-metronome.register()
-
-
+metronome.register();
 
 const API_KEY = "971af93c";
-
 const RECOMMENDED_MOVIES = [
-    "tt0111162", "tt0068646", "tt0468569", "tt0071564", "tt0108052", 
-    "tt0050083", "tt0167260", "tt0110912", "tt1375666", "tt0137523", 
+    "tt0111162", "tt0068646", "tt0468569", "tt0071564", "tt0108052",
+    "tt0050083", "tt0167260", "tt0110912", "tt1375666", "tt0137523",
     "tt0120737", "tt0080684", "tt0109830", "tt0245429", "tt1853728"
 ];
 
@@ -23,7 +20,7 @@ const useRecommendedMovies = () => {
         RECOMMENDED_MOVIES.map(id => `http://www.omdbapi.com/?apikey=${API_KEY}&i=${id}`),
         async (urls) => {
             const responses = await Promise.all(urls.map(url => fetcher(url)));
-            return responses;
+            return responses.filter(movie => movie && movie.Poster && movie.imdbID);
         }
     );
 
@@ -35,11 +32,23 @@ const useRecommendedMovies = () => {
 };
 
 const RecommendedMovies = () => {
+    const navigate = useNavigate();
     const { movies, loading, error } = useRecommendedMovies();
 
-    if (loading) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
+    if (loading)
+        return (
+            <div className="flex justify-center items-center h-screen">
+                <l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome>
+            </div>
+        );
 
-    if (error) return <p>Error fetching recommended movies.</p>;
+    if (error) return <p className="text-red-500 text-center">Error fetching recommended movies.</p>;
+
+
+    const handleMovie = (movie) => {
+        if (!movie?.imdbID) return;
+        navigate(`/moviedetails/${movie.imdbID}`);
+    };
 
     return (
         <div className='flex flex-col p-10 bg-b bg-gradient-to-b from-black to-gray-900 min-h-screen'>
@@ -49,7 +58,11 @@ const RecommendedMovies = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
                 {movies.map((movie) => (
-                    <div className="card p-2 flex flex-col" key={movie.imdbID}>
+                    <div
+                        className="card p-2 flex flex-col cursor-pointer"
+                        key={movie.imdbID}
+                        onClick={() => handleMovie(movie)}
+                    >
                         <div className="relative group">
                             <div className="relative w-full h-64">
                                 <img
@@ -72,7 +85,7 @@ const RecommendedMovies = () => {
                         <div className="p-2 flex flex-row justify-between items-center">
                             <p className="border px-2 flex-shrink-0">HD</p>
                             <div className="flex flex-row items-center gap-x-2 overflow-hidden">
-                                <p className="whitespace-nowrap">{movie.Runtime}</p>
+                                <p className="whitespace-nowrap">{movie.Runtime || "N/A"}</p>
                                 <p className="flex items-center">
                                     <svg
                                         className="text-primary size-4"
@@ -86,7 +99,7 @@ const RecommendedMovies = () => {
                                             clipRule="evenodd"
                                         />
                                     </svg>
-                                    {movie.imdbRating}
+                                    {movie.imdbRating || "N/A"}
                                 </p>
                             </div>
                         </div>

@@ -2,6 +2,8 @@ import React from "react";
 import useSWR from "swr";
 import PlayLogo from "../../assets/MalosFlixLogo.png";
 import { metronome } from 'ldrs'
+import { useNavigate } from 'react-router-dom';
+
 
 metronome.register()
 
@@ -25,10 +27,17 @@ const useLatestSeries = () => {
 };
 
 const LatestSeries = () => {
+    const navigate = useNavigate();
+
     const { series, loading, error } = useLatestSeries();
 
     if (loading) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
     if (error) return <p>Error fetching latest series.</p>;
+
+    const handleMovie = (movie) => {
+        if (!movie?.imdbID) return;
+        navigate(`/moviedetails/${movie.imdbID}`);
+    };
 
     return (
         <div className="flex flex-col p-10 bg-gradient-to-b from-black to-gray-900 min-h-screen">
@@ -38,7 +47,11 @@ const LatestSeries = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
                 {series.slice(0, 15).map((seriesItem) => (
-                    <div className="card p-2 flex flex-col" key={seriesItem.imdbID}>
+                    <div 
+                        className="card p-2 flex flex-col" 
+                        key={seriesItem.imdbID}
+                        onClick={() => handleMovie(seriesItem)}
+                        >
                         <div className="relative group">
                             <div className="relative w-full h-64">
                                 <img

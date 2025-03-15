@@ -2,6 +2,7 @@ import React from "react";
 import useSWR from "swr";
 import PlayLogo from "../../assets/MalosFlixLogo.png";
 import { metronome } from 'ldrs'
+import { useNavigate } from "react-router";
 
 metronome.register()
 
@@ -39,10 +40,17 @@ const useAnime = () => {
 };
 
 const AnimePage = () => {
+    const navigate = useNavigate()
+
     const { animes, loading, error } = useAnime();
 
     if (loading) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
     if (error) return <p>Error fetching Anime...</p>;
+
+    const handleMovie = (movie) => {
+        if (!movie?.imdbID) return;
+        navigate(`/moviedetails/${movie.imdbID}`);
+    };
 
     return (
         <div className="flex flex-col p-10 bg-gradient-to-b from-black to-gray-900 min-h-screen">
@@ -54,7 +62,11 @@ const AnimePage = () => {
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
                 {animes.slice(0, 36).map((anime) => (
-                    <div className="card p-2 flex flex-col" key={anime.imdbID}>
+                    <div 
+                        className="card p-2 flex flex-col" 
+                        key={anime.imdbID}
+                        onClick={() => handleMovie(anime)}
+                        >
                         <div className="relative group">
                             <div className="relative w-full h-64">
                                 <img
