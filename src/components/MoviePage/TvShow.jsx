@@ -3,7 +3,7 @@ import useSWR from "swr";
 import PlayLogo from "../../assets/MalosFlixLogo.png";
 import { metronome } from 'ldrs';
 import { useNavigate } from "react-router";
-import placeholderImage from '../../assets/imageplaceholder.png'
+import placeholderImage from '../../assets/imageplaceholder.png';
 
 metronome.register();
 
@@ -12,15 +12,7 @@ const API_KEY = "971af93c";
 // Fetch function
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
-const useShows = () => {
-    const urls = [
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=1`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=2`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=3`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=4`,
-    ];
-
-    // Fetch multiple pages in parallel
+const useShows = (urls) => {
     const { data, error } = useSWR(urls, async (urls) => {
         const responses = await Promise.all(urls.map((url) => fetcher(url)));
         return responses.flatMap((response) => response.Search || []);
@@ -35,49 +27,49 @@ const useShows = () => {
 
 const TVShowsPage = () => {
     const navigate = useNavigate();
-    const { shows, loading, error } = useShows();
-    const [showsDetails, setShowsDetails] = useState([]);
 
-    // Fetch details for each show after initial data is fetched
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [shows, setShows] = useState([]);
+    const [page, setPage] = useState(1);
+    const [urls, setUrls] = useState([
+        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=1`,
+        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=2`,
+    ]);
+
+    const { shows: newShows, loading, error } = useShows(urls);
+
+    const loadMoreShows = (e) => {
+        e.preventDefault();
+
+        setLoadingMore(true);
+
+        setPage((prevPage) => {
+            const newPage = prevPage + 2;
+
+            setUrls((prevUrls) => [
+                ...prevUrls,
+                `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=${newPage - 1}`,
+                `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=${newPage}`,
+            ]);
+
+            return newPage;
+        });
+    };
+
     useEffect(() => {
-        if (shows.length > 0) {
-            const fetchDetails = async () => {
-                const showsWithDetails = await Promise.all(
-                    shows.map(async (show) => {
-                        const response = await fetch(
-                            `http://www.omdbapi.com/?apikey=${API_KEY}&i=${show.imdbID}`
-                        );
-                        const data = await response.json();
-
-                        // Handle missing fields (Poster, Runtime, imdbRating)
-                        return {
-                            ...show,
-                            details: {
-                                Poster: data.Poster || "", // If no poster, keep it as an empty string
-                                Runtime: data.Runtime || "N/A",  // Fallback for missing runtime
-                                imdbRating: data.imdbRating || "N/A",  // Fallback for missing rating
-                            },
-                        };
-                    })
-                );
-                // Only set shows that have a valid poster
-                const filteredShows = showsWithDetails.filter((show) => show.details.Poster !== "");
-                setShowsDetails(filteredShows);
-            };
-
-            fetchDetails();
+        if (newShows.length > 0) {
+            setShows((prevShows) => [...prevShows, ...newShows]);
+            setLoadingMore(false);
         }
-    }, [shows]);
+    }, [newShows]);
 
-    if (loading) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
+    if (loading && page === 1) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
     if (error) return <p>Error fetching TV shows...</p>;
 
-    const handleMovie = (movie) => {
-        if (!movie?.imdbID) return;
-  
-        window.scrollTo({ top:0, behavior:'smooth'})
-  
-        navigate(`/moviedetails/${movie.imdbID}`);
+    const handleShow = (show) => {
+        if (!show?.imdbID) return;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        navigate(`/moviedetails/${show.imdbID}`);
     };
 
     return (
@@ -89,14 +81,14 @@ const TVShowsPage = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
-                {showsDetails.slice(0, 36).map((show) => {
-                    const { Poster, Runtime, imdbRating } = show.details;
-                    
+                {shows.map((show) => {
+                    const { Poster, Runtime, imdbRating } = show;
+
                     return (
                         <div
                             className="card p-2 flex flex-col"
                             key={show.imdbID}
-                            onClick={() => handleMovie(show)}
+                            onClick={() => handleShow(show)}
                         >
                             <div className="relative group">
                                 <div className="relative w-full h-64">
@@ -121,7 +113,7 @@ const TVShowsPage = () => {
                             <div className="p-2 flex flex-row justify-between items-center">
                                 <p className="border px-2 flex-shrink-0">HD</p>
                                 <div className="flex flex-row items-center gap-x-2 overflow-hidden">
-                                    <p className="whitespace-nowrap">{Runtime}</p>
+                                    <p className="whitespace-nowrap">{Runtime || "N/A"}</p>
                                     <p className="flex items-center">
                                         <svg
                                             className="text-primary size-4"
@@ -135,13 +127,23 @@ const TVShowsPage = () => {
                                                 clipRule="evenodd"
                                             />
                                         </svg>
-                                        {imdbRating}
+                                        {imdbRating || "N/A"}
                                     </p>
                                 </div>
                             </div>
                         </div>
                     );
                 })}
+            </div>
+
+            <div className="flex justify-center">
+                <button
+                    className="border-2 border-primary rounded-3xl mt-5 p-2 pl-5 pr-5 text-sm hover:bg-primary active:opacity-60 hover:text-black hover:transition-transform ease-in-out duration-300"
+                    onClick={loadMoreShows}
+                    disabled={loadingMore}
+                >
+                    {loadingMore ? <p>Loading <l-metronome size="20" speed="1.6" color="white"></l-metronome></p> : "LOAD MORE"}
+                </button>
             </div>
         </div>
     );
