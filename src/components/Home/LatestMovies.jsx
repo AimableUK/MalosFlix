@@ -13,18 +13,39 @@ const API_KEY = "971af93c";
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const useLatestMovies = () => {
+    // Fetch list of latest movies first
     const { data, error } = useSWR(
         `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=1`,
         fetcher,
         { refreshInterval: 5000 }
     );
 
+    // After fetching the movie list, fetch details for each movie
+    const detailedMovies = data?.Search ? data.Search.map(movie => 
+        fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}`)
+            .then(res => res.json())
+            .then(details => ({
+                ...movie,
+                ...details // Merge details like imdbRating, Runtime, etc.
+            }))
+    ) : [];
+
+    const [movies, setMovies] = React.useState([]);
+    
+    // Wait for all movie details to load
+    React.useEffect(() => {
+        Promise.all(detailedMovies)
+            .then(results => setMovies(results))
+            .catch(() => setMovies([])); // Handle any error in fetching details
+    }, [data]);
+
     return {
-        movies: data?.Search || [],
+        movies,
         loading: !data && !error,
         error,
     };
 };
+
 
 const LatestMovies = () => {
     const navigate = useNavigate();
@@ -36,6 +57,9 @@ const LatestMovies = () => {
 
     const handleMovie = (movie) => {
         if (!movie?.imdbID) return;
+  
+        window.scrollTo({ top:0, behavior:'smooth'})
+  
         navigate(`/moviedetails/${movie.imdbID}`);
     };
 

@@ -47,6 +47,9 @@ const RecommendedMovies = () => {
 
     const handleMovie = (movie) => {
         if (!movie?.imdbID) return;
+  
+        window.scrollTo({ top:0, behavior:'smooth'})
+  
         navigate(`/moviedetails/${movie.imdbID}`);
     };
 

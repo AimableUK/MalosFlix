@@ -101,10 +101,10 @@ const Header = () => {
                     <NavLink to="/Moviepage">MOVIES</NavLink> <span className='ml-2 text-gray-500'>|</span>
                 </li>
                 <li>
-                    <NavLink to="/Moviepage">TV SHOW</NavLink> <span className='ml-2 text-gray-500'>|</span>
+                    <NavLink to="/TvShow">TV SHOW</NavLink> <span className='ml-2 text-gray-500'>|</span>
                 </li>
                 <li>
-                    <NavLink to="/Moviepage">ANIME</NavLink>
+                    <NavLink to="/Anime">ANIME</NavLink>
                 </li>
             </ul>
           </div>

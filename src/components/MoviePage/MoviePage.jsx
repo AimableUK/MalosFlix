@@ -49,8 +49,12 @@ const MoviePage = () => {
 
     const handleMovie = (movie) => {
         if (!movie?.imdbID) return;
+  
+        window.scrollTo({ top:0, behavior:'smooth'})
+  
         navigate(`/moviedetails/${movie.imdbID}`);
     };
+    
     return (
         <div className="flex flex-col p-10 bg-gradient-to-b from-black to-gray-900 min-h-screen">
             <div className="flex flex-col">
