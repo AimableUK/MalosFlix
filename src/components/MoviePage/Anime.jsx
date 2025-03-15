@@ -9,14 +9,8 @@ metronome.register();
 
 const API_KEY = "971af93c";
 
-// Fetch function for anime list
-const fetcher = (url) => fetch(url).then((res) => res.json());
 
-// Fetch function for individual anime details (Runtime, Rating)
-const fetchAnimeDetails = (imdbID) => {
-    return fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${imdbID}`)
-        .then((res) => res.json());
-};
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const useAnime = (urls) => {
     const { data, error } = useSWR(urls, async (urls) => {

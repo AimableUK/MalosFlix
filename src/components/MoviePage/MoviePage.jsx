@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import useSWR from "swr";
 import PlayLogo from "../../assets/MalosFlixLogo.png";
+import placeholderImage from "../../assets/imageplaceholder.png"; // Import placeholder image
 import { metronome } from 'ldrs';
 import { useNavigate } from "react-router";
 
 metronome.register();
 const API_KEY = "971af93c";
-
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -34,7 +34,7 @@ const useMovies = (urls) => {
 const MoviePage = () => {
     const navigate = useNavigate();
 
-    const [loadingMore, setLoadingMore] = useState(false)
+    const [loadingMore, setLoadingMore] = useState(false);
     const [movies, setMovies] = React.useState([]);
     const [page, setPage] = React.useState(1);
     const [urls, setUrls] = React.useState([
@@ -46,9 +46,8 @@ const MoviePage = () => {
 
     const loadMoreMovies = (e) => {
         e.preventDefault();
-        
-        setLoadingMore(true)
-        
+
+        setLoadingMore(true);
 
         setPage(prevPage => {
             const newPage = prevPage + 2;
@@ -58,7 +57,7 @@ const MoviePage = () => {
                 `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=${newPage - 1}`,
                 `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=${newPage}`,
             ]);
-            
+
             return newPage;
         });
     };
@@ -68,7 +67,7 @@ const MoviePage = () => {
             setMovies((prevMovies) => [...prevMovies, ...newMovies]);
             setLoadingMore(false);
         }
-   }, [newMovies]);
+    }, [newMovies]);
 
     React.useEffect(() => {
         if (newMovies.length > 0) {
@@ -83,6 +82,11 @@ const MoviePage = () => {
         if (!movie?.imdbID) return;
         window.scrollTo({ top: 0, behavior: 'smooth' });
         navigate(`/moviedetails/${movie.imdbID}`);
+    };
+
+    const handleImageError = (e) => {
+        e.target.onerror = null; // Prevent infinite loop if the placeholder also fails
+        e.target.src = placeholderImage; // Set to placeholder image if the original fails to load
     };
 
     return (
@@ -103,6 +107,7 @@ const MoviePage = () => {
                                     alt={movie.Title}
                                     className="w-full h-full object-cover rounded-md group-hover:opacity-30 transition-opacity duration-100"
                                     onClick={() => handleMovie(movie)}
+                                    onError={handleImageError} // Handle error for missing images
                                 />
                                 <img
                                     src={PlayLogo}
@@ -147,7 +152,7 @@ const MoviePage = () => {
                     onClick={loadMoreMovies}
                     disabled={loadingMore}
                 >
-                    {loadingMore ?  <p>Loading <l-metronome size="20" speed="1.6" color="white"></l-metronome></p>: "LOAD MORE"}
+                    {loadingMore ? <p>Loading <l-metronome size="20" speed="1.6" color="white"></l-metronome></p> : "LOAD MORE"}
                 </button>
             </div>
         </div>
