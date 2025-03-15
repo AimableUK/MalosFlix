@@ -1,6 +1,20 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 
 const AboutUs = () => {
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading for 2 seconds
+    setTimeout(() => {
+      setLoading(false);
+    }, 100); // Adjust the timeout as per your need
+  }, []);
+
+  if (loading) {
+    return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
+  }
+
   return (
     <div className='p-7'>
     <p><h4>Malos<span className='text-primary'>Flix</span></h4>

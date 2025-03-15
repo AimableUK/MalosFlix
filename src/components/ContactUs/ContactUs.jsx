@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { FormSubmitSchema } from '../../schema/ContactUsSchema';
 
@@ -8,6 +8,19 @@ const ContactUs = () => {
     actions.resetForm();
     console.log(values);
   }
+
+  const [loading, setLoading] = useState(true);
+  
+    useEffect(() => {
+      // Simulate loading for 2 seconds
+      setTimeout(() => {
+        setLoading(false);
+      }, 100); // Adjust the timeout as per your need
+    }, []);
+  
+    if (loading) {
+      return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
+    }
 
   return (
     <div className="ContactContainer ">
@@ -60,9 +73,9 @@ const ContactUs = () => {
                 <button
                   disabled={isSubmitting}
                   type="submit"
-                  className="self-center block pr-5 pl-5 border-2 mt-4 border-primary rounded-3xl p-2 text-sm hover:bg-primary hover:text-black hover:transition-transform ease-in-out duration-300"
+                  className="items-center self-center block pr-5 pl-5 border-2 mt-4 border-primary rounded-3xl p-2 text-sm hover:bg-primary hover:text-black hover:transition-transform ease-in-out duration-300"
                 >
-                  {isSubmitting ? "Submitting..." : "SUBMIT"}
+                  {isSubmitting ? <p>Submiting<l-metronome size="20" speed="1.6" color="white"></l-metronome></p> : "SUBMIT"}
                 </button>
               </div>
 
