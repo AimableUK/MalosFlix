@@ -140,7 +140,7 @@ const MovieDetails = () => {
       </div>
 
       {/* Related Movies Section */}
-      <div className="flex flex-col p-10 bg-b bg-gradient-to-b from-black to-gray-900 min-h-screen">
+      {relatedMovies.length >0 ? <div className="flex flex-col p-10 bg-b bg-gradient-to-b from-black to-gray-900 min-h-screen">
         <p className="text-primary">Related Movies</p>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
           {relatedMovies.map((movie) => (
@@ -193,6 +193,7 @@ const MovieDetails = () => {
           ))}
         </div>
       </div>
+      : ""}
     </>
   );
 };
