@@ -11,7 +11,7 @@ import Layout from './Layout';
 import Page404 from './components/404Page/Page404'
 import Anime from './components/MoviePage/Anime';
 import TvShow from './components/MoviePage/TvShow';
-
+import Search from './components/Search/Search';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -22,6 +22,7 @@ const router = createBrowserRouter(
       <Route path='TvShow' element={<TvShow />} />
       <Route path='aboutus' element={<AboutUs />} />
       <Route path='contactus' element={<ContactUs />} />
+      <Route path='search' element={<Search />} />
       <Route path='moviedetails/' element={<MovieDetails />}>
         <Route path=':movieid' element={<MovieDetails />}/>
       </Route>
