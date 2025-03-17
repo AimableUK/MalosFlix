@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import LandingBg from "./assets/LandingBg.jpg";
+import PageTitleUpdater from "./components/TitleUpdater/PageTitleUpdater";
 
 const Layout = () => {
   const location = useLocation();
@@ -22,6 +23,7 @@ const Layout = () => {
       )}
 
       <div className="relative z-10 text-white">
+        <PageTitleUpdater />
         <Header />
         <Outlet />
         <Footer />

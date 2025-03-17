@@ -57,6 +57,7 @@ const MovieDetails = () => {
     };
 
     if (movie) {
+      document.title = movie.Title ? `${movie.Title} - MalosFlix` : 'MalosFlix';
       fetchRelatedMovies();
     }
   }, [movie]);
