@@ -21,8 +21,8 @@ const Header = () => {
 
         {/* left side */}
         <div className='leftSide flex flex-row ml-2 items-center'>
-          <img src={logo} alt="logo" className='w-10 h-10 mr-2'/>
-          <h4>Malos<span className='text-primary'>Flix</span></h4>
+          <a href='/'><img src={logo} alt="logo" className='w-10 h-10 mr-2'/></a>
+          <a href='/'>Malos<span className='text-primary'>Flix</span></a>
         </div>
 
         {/* middle */}
@@ -88,8 +88,8 @@ const Header = () => {
         <div className='flex flex-row justify-between items-center gap-1'>
 
           <div className='leftSide flex flex-row ml-2 items-center'>
-            <img src={logo} alt="logo" className='w-10 h-10 mr-2'/>
-            <h4>Malos<span className='text-primary'>Flix</span></h4>
+            <a href='/'><img src={logo} alt="logo" className='w-10 h-10 mr-2'/></a>
+            <a href='/'>Malos<span className='text-primary'>Flix</span></a>
           </div>
 
           <div className='rightSide flex flex-row items-center'>

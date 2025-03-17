@@ -1,5 +1,5 @@
 import React from 'react'
-import page404gif from '../../img/page404.gif'
+import page404gif from '../../assets/page404.gif'
 
 
 

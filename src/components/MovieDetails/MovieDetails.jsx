@@ -149,7 +149,12 @@ const MovieDetails = () => {
             </div>
 
             {/* Play button */}
-            <button className="flex items-center mt-4 ml-2 border-2 border-primary rounded-3xl p-2 text-sm hover:bg-primary hover:text-black hover:transition-transform ease-in-out duration-300 group">
+            <button className="flex items-center mt-4 ml-2 border-2 border-primary rounded-3xl p-2 text-sm hover:bg-primary hover:text-black hover:transition-transform ease-in-out duration-300 group"
+              onClick={() => {
+                if (movie?.imdbID) {
+                  window.open(`https://www.imdb.com/title/${movie.imdbID}/`, "_blank");
+                }}}
+              >
               <svg className="size-6 text-primary transition-colors duration-300 group-hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
               </svg>
