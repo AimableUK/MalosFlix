@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
 import logo from '../../assets/MalosFlixLogo.png'
 import { NavLink } from 'react-router'
+import { useNavigate } from 'react-router-dom'
 
 const Header = () => {
 
   const [searchQuery, setSearchQuery] = useState("")
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle the search logic here (e.g., call an API or filter data)
-    console.log(searchQuery);
+    navigate(`/search?q=${searchQuery}`);
   };
 
   return (

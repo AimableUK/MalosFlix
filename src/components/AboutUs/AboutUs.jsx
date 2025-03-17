@@ -5,10 +5,10 @@ const AboutUs = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading for 2 seconds
+
     setTimeout(() => {
       setLoading(false);
-    }, 100); // Adjust the timeout as per your need
+    }, 100);
   }, []);
 
   if (loading) {

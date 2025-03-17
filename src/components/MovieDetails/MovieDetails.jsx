@@ -9,7 +9,6 @@ metronome.register();
 
 const API_KEY = "971af93c";
 
-// Fetcher function for SWR
 const fetcherMovie = (url) => fetch(url).then((res) => res.json());
 
 const MovieDetails = () => {
@@ -21,6 +20,7 @@ const MovieDetails = () => {
   );
 
   const [relatedMovies, setRelatedMovies] = useState([]);
+  const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -52,10 +52,30 @@ const MovieDetails = () => {
       }
     };
 
+    const fetchRecommendedMovies = async () => {
+      try {
+        const response = await fetch(
+          `http://www.omdbapi.com/?apikey=${API_KEY}&s=popular&type=movie`
+        );
+        const data = await response.json();
+
+        if (data.Response === "True") {
+          setRecommendedMovies(data.Search.filter((item) => item.Poster !== "N/A"));
+        }
+      } catch (error) {
+        console.error("Error fetching recommended movies:", error);
+      }
+    };
+
     if (movie) {
       fetchRelatedMovies();
     }
-  }, [movie]);
+
+    // Fetch recommended movies if no related movies
+    if (relatedMovies.length === 0) {
+      fetchRecommendedMovies();
+    }
+  }, [movie, relatedMovies.length]);
 
   if (error) return <p>Error loading movie details.</p>;
   if (!movie) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
@@ -140,7 +160,7 @@ const MovieDetails = () => {
       </div>
 
       {/* Related Movies Section */}
-      {relatedMovies.length >0 ? <div className="flex flex-col p-10 bg-b bg-gradient-to-b from-black to-gray-900 min-h-screen">
+      {relatedMovies.length >0 ? (<div className="flex flex-col p-10 bg-b bg-gradient-to-b from-black to-gray-900 min-h-screen">
         <p className="text-primary">Related Movies</p>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
           {relatedMovies.map((movie) => (
@@ -155,6 +175,7 @@ const MovieDetails = () => {
                     src={movie.Poster !== "N/A" ? movie.Poster : placeholderImage}
                     alt={movie.Title}
                     className="w-full h-full object-cover rounded-md group-hover:opacity-30 transition-opacity duration-100"
+                    onError={(e) => e.target.src = placeholderImage}
                   />
                   <img
                     src={PlayLogo}
@@ -193,7 +214,39 @@ const MovieDetails = () => {
           ))}
         </div>
       </div>
-      : ""}
+      ): 
+      <div className="flex flex-col p-10 bg-b bg-gradient-to-b from-black to-gray-900 min-h-screen">
+        <p className="text-primary">Recommended Movies</p>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
+          {recommendedMovies.map((movie) => (
+            <div
+              className="card p-2 flex flex-col"
+              key={movie.imdbID}
+              onClick={() => handleMovie(movie)}
+            >
+              <div className="relative group">
+                <div className="relative w-full h-64">
+                  <img
+                    src={movie.Poster !== "N/A" ? movie.Poster : placeholderImage}
+                    alt={movie.Title}
+                    className="w-full h-full object-cover rounded-md group-hover:opacity-30 transition-opacity duration-100"
+                    onError={(e) => e.target.src = placeholderImage}
+                  />
+                  <img
+                    src={PlayLogo}
+                    className="absolute inset-0 w-10 m-auto opacity-0 group-hover:opacity-100 transition-opacity duration-100"
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-row justify-between items-center mt-4">
+                <p className="truncate font-electrolize text-white">{movie.Title}</p>
+                <p className="whitespace-nowrap text-primary">{movie.Year}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>}
     </>
   );
 };

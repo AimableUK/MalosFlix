@@ -30,7 +30,7 @@ const LatestSeries = () => {
     const { series, loading, error } = useLatestSeries();
     const [seriesDetails, setSeriesDetails] = useState([]);
 
-    // Fetch details for each series only once
+    
     useEffect(() => {
         if (series.length > 0) {
             const fetchDetails = async () => {
@@ -41,12 +41,12 @@ const LatestSeries = () => {
                         );
                         const data = await response.json();
 
-                        // Handle missing fields (Runtime, imdbRating)
+                        
                         const movieDetails = {
                             ...seriesItem,
                             details: {
-                                Runtime: data.Runtime || "N/A",  // Default to N/A if not available
-                                imdbRating: data.imdbRating || "N/A",  // Default to N/A if not available
+                                Runtime: data.Runtime || "N/A",
+                                imdbRating: data.imdbRating || "N/A",
                             },
                         };
 
