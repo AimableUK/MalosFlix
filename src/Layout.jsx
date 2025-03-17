@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import LandingBg from "../src/img/LandingBg.png";
+import LandingBg from "../src/img/landingBg.jpg";
 
 const Layout = () => {
   const location = useLocation();
