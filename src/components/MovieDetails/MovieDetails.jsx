@@ -4,6 +4,8 @@ import PlayLogo from '../../assets/MalosFlixLogo.png';
 import { metronome } from 'ldrs';
 import { useParams, useNavigate } from 'react-router-dom';
 import placeholderImage from "../../assets/imageplaceholder.png";
+import { FaFacebook, FaTwitter, FaWhatsapp, FaEnvelope,FaLink } from "react-icons/fa";
+
 
 metronome.register();
 
@@ -12,6 +14,9 @@ const API_KEY = "971af93c";
 const fetcherMovie = (url) => fetch(url).then((res) => res.json());
 
 const MovieDetails = () => {
+
+  const [copied, setCopied] = useState(false)
+  const [share, setShare] = useState(false)
   const navigate = useNavigate();
   const { movieid } = useParams();
   const { data: movie, error } = useSWR(
@@ -20,7 +25,6 @@ const MovieDetails = () => {
   );
 
   const [relatedMovies, setRelatedMovies] = useState([]);
-  const [recommendedMovies, setRecommendedMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -52,30 +56,10 @@ const MovieDetails = () => {
       }
     };
 
-    const fetchRecommendedMovies = async () => {
-      try {
-        const response = await fetch(
-          `http://www.omdbapi.com/?apikey=${API_KEY}&s=popular&type=movie`
-        );
-        const data = await response.json();
-
-        if (data.Response === "True") {
-          setRecommendedMovies(data.Search.filter((item) => item.Poster !== "N/A"));
-        }
-      } catch (error) {
-        console.error("Error fetching recommended movies:", error);
-      }
-    };
-
     if (movie) {
       fetchRelatedMovies();
     }
-
-    // Fetch recommended movies if no related movies
-    if (relatedMovies.length === 0) {
-      fetchRecommendedMovies();
-    }
-  }, [movie, relatedMovies.length]);
+  }, [movie]);
 
   if (error) return <p>Error loading movie details.</p>;
   if (!movie) return <div className="flex justify-center items-center h-screen"><l-metronome size="40" speed="1.6" color="#CCFF00"></l-metronome></div>;
@@ -87,6 +71,36 @@ const MovieDetails = () => {
     navigate(`/moviedetails/${movie.imdbID}`);
   };
 
+  const movieUrl = `https://malosflix.com/movie/${movie.imdbID}`;
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(movieUrl)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+        }, 2000);
+
+      })
+      .catch((err) => {
+        alert("Failed to copy the link",err);
+      });
+  };
+
+  const shareOptions = [
+    { icon: <FaTwitter />, url: `https://twitter.com/intent/tweet?text=Check out this movie!&url=${movieUrl}` },
+    { icon: <FaFacebook />, url: `https://www.facebook.com/sharer/sharer.php?u=${movieUrl}` },
+    { icon: <FaWhatsapp />, url: `https://wa.me/?text=Check out this movie! ${movieUrl}` },
+    { icon: <FaEnvelope />, url: `mailto:?subject=Check out this movie!&body=Watch it here: ${movieUrl}` },
+    { icon: <FaLink />, action: handleCopyLink, label: "Copy Link" }
+  ];
+
+  const handleShare = (url) => {
+    window.open(url, "_blank");
+  };
+
+  
+
   return (
     <>
       {/* Movie Details Section */}
@@ -94,6 +108,10 @@ const MovieDetails = () => {
         {/* Movie Poster */}
         <div className="relative group">
           <img
+            onClick={() => {
+              if (movie?.imdbID) {
+                window.open(`https://www.imdb.com/title/${movie.imdbID}/`, "_blank");
+            }}}
             src={movie.Poster !== "N/A" ? movie.Poster : placeholderImage}
             className="justify-self-center md:justify-start cursor-pointer min-w-10 w-full relative hover:opacity-30"
             onContextMenu={(e) => e.preventDefault()}
@@ -130,7 +148,9 @@ const MovieDetails = () => {
 
           <div className="flex flex-row mt-7 bg-zinc-600 rounded-lg p-3 gap-10 w-fit items-center">
             {/* Share button */}
-            <div className="flex flex-col items-center hover:cursor-pointer">
+            <div
+              onClick={() => setShare(prevShare => !prevShare)}
+              className="flex flex-col items-center hover:cursor-pointer">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                 <path fillRule="evenodd" d="M15.75 4.5a3 3 0 1 1 .825 2.066l-8.421 4.679a3.002 3.002 0 0 1 0 1.51l8.421 4.679a3 3 0 1 1-.729 1.31l-8.421-4.678a3 3 0 1 1 0-4.132l8.421-4.679a3 3 0 0 1-.096-.755Z" clipRule="evenodd" />
               </svg>
@@ -139,7 +159,11 @@ const MovieDetails = () => {
 
             {/* Rate the movie */}
             <div className="flex flex-col items-center hover:cursor-pointer">
-              <p>Rate The Show</p>
+              <p
+                onClick={() => {
+                  window.open(`https://www.imdb.com/title/${movie.imdbID}/ratings`, "_blank");
+                }}
+                >Rate the {movie.Type}</p>
               <p className="flex flex-row">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                   <path fillRule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z" clipRule="evenodd" />
@@ -149,23 +173,44 @@ const MovieDetails = () => {
             </div>
 
             {/* Play button */}
-            <button className="flex items-center mt-4 ml-2 border-2 border-primary rounded-3xl p-2 text-sm hover:bg-primary hover:text-black hover:transition-transform ease-in-out duration-300 group"
+            <button
               onClick={() => {
                 if (movie?.imdbID) {
                   window.open(`https://www.imdb.com/title/${movie.imdbID}/`, "_blank");
                 }}}
-              >
+                
+              className="flex items-center mt-4 ml-2 border-2 border-primary rounded-3xl p-2 text-sm hover:bg-primary hover:text-black hover:transition-transform ease-in-out duration-300 group">
               <svg className="size-6 text-primary transition-colors duration-300 group-hover:text-black" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path fillRule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clipRule="evenodd" />
               </svg>
               PLAY NOW
             </button>
           </div>
+          <div className='flex flex-row'>
+            {share && 
+              shareOptions.map((option, index) => (
+                <div key={index} className="relative">
+                  <button
+                    className="p-3 rounded-full text-primary hover:text-black hover:bg-primary transition duration-300 ease-in-out"
+                    onClick={() => option.url ? handleShare(option.url) : option.action()}
+                  >
+                    {option.icon}
+                  </button>
+                  {copied && option.label === "Copy Link" && (
+                    <p className="absolute text-green-500 mt-1 text-sm">Copied!</p>
+                  )}
+                </div>
+              ))
+            }
+          </div>
+
+          
+          
         </div>
       </div>
 
       {/* Related Movies Section */}
-      {relatedMovies.length >0 ? (<div className="flex flex-col p-10 bg-b bg-gradient-to-b from-black to-gray-900 min-h-screen">
+      {relatedMovies.length >0 ? <div className="flex flex-col p-10 bg-b bg-gradient-to-b from-black to-gray-900 min-h-screen">
         <p className="text-primary">Related Movies</p>
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
           {relatedMovies.map((movie) => (
@@ -219,39 +264,7 @@ const MovieDetails = () => {
           ))}
         </div>
       </div>
-      ): 
-      <div className="flex flex-col p-10 bg-b bg-gradient-to-b from-black to-gray-900 min-h-screen">
-        <p className="text-primary">Recommended Movies</p>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-4">
-          {recommendedMovies.map((movie) => (
-            <div
-              className="card p-2 flex flex-col"
-              key={movie.imdbID}
-              onClick={() => handleMovie(movie)}
-            >
-              <div className="relative group">
-                <div className="relative w-full h-64">
-                  <img
-                    src={movie.Poster !== "N/A" ? movie.Poster : placeholderImage}
-                    alt={movie.Title}
-                    className="w-full h-full object-cover rounded-md group-hover:opacity-30 transition-opacity duration-100"
-                    onError={(e) => e.target.src = placeholderImage}
-                  />
-                  <img
-                    src={PlayLogo}
-                    className="absolute inset-0 w-10 m-auto opacity-0 group-hover:opacity-100 transition-opacity duration-100"
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-row justify-between items-center mt-4">
-                <p className="truncate font-electrolize text-white">{movie.Title}</p>
-                <p className="whitespace-nowrap text-primary">{movie.Year}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>}
+      : ""}
     </>
   );
 };
