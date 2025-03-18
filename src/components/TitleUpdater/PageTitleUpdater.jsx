@@ -19,6 +19,8 @@ const PageTitleUpdater = () => {
       title = 'About Us - MalosFlix';
     } else if (location.pathname === '/contactus') {
       title = 'Contact Us - MalosFlix';
+    }  else if (location.pathname === '/search') {
+        title = 'Movie Search - MalosFlix';
     } else if (location.pathname.startsWith('/moviedetails')) {
       title = 'Movie Details - MalosFlix';
     } else {

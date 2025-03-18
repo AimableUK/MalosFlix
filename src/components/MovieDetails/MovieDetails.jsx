@@ -28,6 +28,7 @@ const MovieDetails = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!movie || movie.Response === "False") return;
     const fetchRelatedMovies = async () => {
       if (movie?.Genre) {
         try {

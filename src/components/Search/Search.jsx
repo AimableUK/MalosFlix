@@ -45,6 +45,10 @@ const Search = () => {
       }
     };
 
+    if (searchQuery) {
+      document.title = `${searchQuery} - MalosFlix`;
+    }
+
     fetchMovies();
   }, [searchQuery]);
 
