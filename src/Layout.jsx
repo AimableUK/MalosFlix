@@ -2,7 +2,7 @@ import React from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import LandingBg from "./assets/LandingBg.jpg";
+import LandingBg from './assets/LandingBg.jpg';
 import PageTitleUpdater from "./components/TitleUpdater/PageTitleUpdater";
 
 const Layout = () => {
