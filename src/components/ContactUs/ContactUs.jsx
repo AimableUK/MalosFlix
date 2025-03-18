@@ -89,11 +89,11 @@ const ContactUs = () => {
 
                 <label htmlFor="phone">Phone:</label>
                 <Field
-                  type="number"
+                  type="text"
                   name="phone"
                   id="phone"
                   className="w-4/5 max-w-xl text-lg px-4 bg-zinc-900 outline-none mb-2 border border-primary rounded-2xl placeholder:text-sm"
-                  placeholder="Enter your phone, e.g., +(1) 071111101..."
+                  placeholder="Enter your phone, e.g., (1) 071111101..."
                 />
                 <ErrorMessage name="phone" component="div" className="text-red-500 text-sm" />
                 <br />

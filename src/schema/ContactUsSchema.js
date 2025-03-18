@@ -11,11 +11,8 @@ export const FormSubmitSchema = yup.object().shape({
         .email("Please enter a valid email")
         .required("Email is Required"),
     
-    phone: yup
-        .number()
-        .positive()
-        .integer()
-        .min(10, "Enter a valid phone number")
+    phone: yup.string()
+        .matches(/^\d{10,15}$/, "Enter a valid phone number")
         .required("Phone number is required"),
     
     address: yup
