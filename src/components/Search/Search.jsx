@@ -4,7 +4,7 @@ import PlayLogo from '../../assets/MalosFlixLogo.png';
 import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router';
 
-const API_KEY = "971af93c";
+const VITE_API_KEY = import.meta.env.VITE_API_KEY
 
 const Search = () => {
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const Search = () => {
         setMovies([]);
         setError(null);
 
-        const response = await fetch(`https://www.omdbapi.com/?s=${searchQuery}&apikey=${API_KEY}`);
+        const response = await fetch(`https://www.omdbapi.com/?s=${searchQuery}&apikey=${VITE_API_KEY}`);
         const data = await response.json();
 
         if (data.Response === 'True') {

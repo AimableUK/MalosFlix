@@ -10,7 +10,7 @@ const ContactUs = () => {
 
   async function onSubmit(values, actions) {
     try {
-      const response = await emailjs.send(
+      await emailjs.send(
         "service_ca8deig",
         "template_gcsczkj",
         {
@@ -26,7 +26,7 @@ const ContactUs = () => {
       setSubmitStatus("success");
       actions.resetForm();
     } catch (error) {
-      setSubmitStatus("error");
+      setSubmitStatus(`error ${error}`);
     }
   }
 

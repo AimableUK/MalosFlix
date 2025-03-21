@@ -9,7 +9,7 @@ import { FaFacebook, FaTwitter, FaWhatsapp, FaEnvelope,FaLink } from "react-icon
 
 metronome.register();
 
-const API_KEY = "971af93c";
+const VITE_API_KEY = import.meta.env.VITE_API_KEY
 
 const fetcherMovie = (url) => fetch(url).then((res) => res.json());
 
@@ -20,7 +20,7 @@ const MovieDetails = () => {
   const navigate = useNavigate();
   const { movieid } = useParams();
   const { data: movie, error } = useSWR(
-    `http://www.omdbapi.com/?apikey=${API_KEY}&i=${movieid}`,
+    `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&i=${movieid}`,
     fetcherMovie
   );
 
@@ -33,7 +33,7 @@ const MovieDetails = () => {
       if (movie?.Genre) {
         try {
           const response = await fetch(
-            `http://www.omdbapi.com/?apikey=${API_KEY}&s=${movie.Genre}&type=movie`
+            `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=${movie.Genre}&type=movie`
           );
           const data = await response.json();
 
@@ -41,7 +41,7 @@ const MovieDetails = () => {
             const detailedMovies = await Promise.all(
               data.Search.map(async (relatedMovie) => {
                 const detailResponse = await fetch(
-                  `http://www.omdbapi.com/?apikey=${API_KEY}&i=${relatedMovie.imdbID}`
+                  `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&i=${relatedMovie.imdbID}`
                 );
                 const detailData = await detailResponse.json();
                 return { ...relatedMovie, ...detailData }; // Merge related movie data with detailed data

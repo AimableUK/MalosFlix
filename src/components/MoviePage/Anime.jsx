@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 
 metronome.register();
 
-const API_KEY = "971af93c";
+const VITE_API_KEY = import.meta.env.VITE_API_KEY
 
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -31,8 +31,8 @@ const AnimePage = () => {
     const [animes, setAnimes] = useState([]);
     const [page, setPage] = useState(1);
     const [urls, setUrls] = useState([
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=movie&page=1`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=movie&page=2`,
+        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=1`,
+        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=2`,
     ]);
 
     const { animes: newAnimes, loading, error } = useAnime(urls);
@@ -47,8 +47,8 @@ const AnimePage = () => {
 
             setUrls((prevUrls) => [
                 ...prevUrls,
-                `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=movie&page=${newPage - 1}`,
-                `http://www.omdbapi.com/?apikey=${API_KEY}&s=anime&type=movie&page=${newPage}`,
+                `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=${newPage - 1}`,
+                `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=${newPage}`,
             ]);
 
             return newPage;

@@ -6,20 +6,20 @@ import { useNavigate } from 'react-router-dom';
 
 metronome.register();
 
-const API_KEY = "971af93c";
 const RECOMMENDED_MOVIES = [
     "tt0111162", "tt0068646", "tt0468569", "tt0071564", "tt0108052",
     "tt0050083", "tt0167260", "tt0110912", "tt1375666", "tt0137523",
     "tt0120737", "tt0080684", "tt0109830", "tt0245429", "tt1853728"
 ];
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
 
+const fetcher = (url) => fetch(url).then((res) => res.json());
 const useRecommendedMovies = () => {
     const { data, error } = useSWR(
-        RECOMMENDED_MOVIES.map(id => `http://www.omdbapi.com/?apikey=${API_KEY}&i=${id}`),
+        RECOMMENDED_MOVIES.map((id) => `http://www.omdbapi.com/?apikey=${import.meta.env.VITE_API_KEY}&i=${id}`),
         async (urls) => {
             const responses = await Promise.all(urls.map(url => fetcher(url)));
+            console.log({responses})
             return responses.filter(movie => movie && movie.Poster && movie.imdbID);
         }
     );

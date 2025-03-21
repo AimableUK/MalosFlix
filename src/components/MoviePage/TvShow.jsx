@@ -7,7 +7,7 @@ import placeholderImage from '../../assets/imageplaceholder.png';
 
 metronome.register();
 
-const API_KEY = "971af93c";
+const VITE_API_KEY = import.meta.env.VITE_API_KEY
 
 // Fetch function
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -32,8 +32,8 @@ const TVShowsPage = () => {
     const [shows, setShows] = useState([]);
     const [page, setPage] = useState(1);
     const [urls, setUrls] = useState([
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=1`,
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=2`,
+        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=1`,
+        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=2`,
     ]);
 
     const { shows: newShows, loading, error } = useShows(urls);
@@ -48,8 +48,8 @@ const TVShowsPage = () => {
 
             setUrls((prevUrls) => [
                 ...prevUrls,
-                `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=${newPage - 1}`,
-                `http://www.omdbapi.com/?apikey=${API_KEY}&s=series&type=series&y=2024&page=${newPage}`,
+                `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=${newPage - 1}`,
+                `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=${newPage}`,
             ]);
 
             return newPage;

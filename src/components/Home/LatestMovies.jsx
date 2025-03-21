@@ -7,14 +7,14 @@ import { useNavigate } from 'react-router-dom';
 
 metronome.register()
 
-const API_KEY = "971af93c";
+const VITE_API_KEY = import.meta.env.VITE_API_KEY
 
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const useLatestMovies = () => {
 
     const { data, error } = useSWR(
-        `http://www.omdbapi.com/?apikey=${API_KEY}&s=movie&type=movie&y=2024&page=1`,
+        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=movie&type=movie&y=2024&page=1`,
         fetcher,
         { refreshInterval: 5000 }
     );
@@ -25,7 +25,7 @@ const useLatestMovies = () => {
         if (data?.Search) {
 
             const detailedMovies = data.Search.map((movie) =>
-                fetch(`http://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}`)
+                fetch(`http://www.omdbapi.com/?apikey=${VITE_API_KEY}&i=${movie.imdbID}`)
                     .then((res) => res.json())
                     .then((details) => ({
                         ...movie,
