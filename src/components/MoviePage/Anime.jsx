@@ -31,8 +31,8 @@ const AnimePage = () => {
     const [animes, setAnimes] = useState([]);
     const [page, setPage] = useState(1);
     const [urls, setUrls] = useState([
-        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=1`,
-        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=2`,
+        `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=1`,
+        `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=2`,
     ]);
 
     const { animes: newAnimes, loading, error } = useAnime(urls);
@@ -47,8 +47,8 @@ const AnimePage = () => {
 
             setUrls((prevUrls) => [
                 ...prevUrls,
-                `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=${newPage - 1}`,
-                `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=${newPage}`,
+                `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=${newPage - 1}`,
+                `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=anime&type=movie&page=${newPage}`,
             ]);
 
             return newPage;

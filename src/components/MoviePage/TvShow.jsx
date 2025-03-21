@@ -32,8 +32,8 @@ const TVShowsPage = () => {
     const [shows, setShows] = useState([]);
     const [page, setPage] = useState(1);
     const [urls, setUrls] = useState([
-        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=1`,
-        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=2`,
+        `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=1`,
+        `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=2`,
     ]);
 
     const { shows: newShows, loading, error } = useShows(urls);
@@ -48,8 +48,8 @@ const TVShowsPage = () => {
 
             setUrls((prevUrls) => [
                 ...prevUrls,
-                `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=${newPage - 1}`,
-                `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=${newPage}`,
+                `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=${newPage - 1}`,
+                `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2024&page=${newPage}`,
             ]);
 
             return newPage;

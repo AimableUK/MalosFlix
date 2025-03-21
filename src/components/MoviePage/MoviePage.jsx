@@ -17,7 +17,7 @@ const useMovies = (urls) => {
 
         const movieDetails = await Promise.all(
             movies.map((movie) =>
-                fetcher(`http://www.omdbapi.com/?apikey=${VITE_API_KEY}&i=${movie.imdbID}`)
+                fetcher(`https://www.omdbapi.com/?apikey=${VITE_API_KEY}&i=${movie.imdbID}`)
             )
         );
 
@@ -38,8 +38,8 @@ const MoviePage = () => {
     const [movies, setMovies] = React.useState([]);
     const [page, setPage] = React.useState(1);
     const [urls, setUrls] = React.useState([
-        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=movie&type=movie&y=2024&page=1`,
-        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=movie&type=movie&y=2024&page=2`,
+        `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=movie&type=movie&y=2024&page=1`,
+        `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=movie&type=movie&y=2024&page=2`,
     ]);
 
     const { movies: newMovies, loading, error } = useMovies(urls);
@@ -54,8 +54,8 @@ const MoviePage = () => {
 
             setUrls((prevUrls) => [
                 ...prevUrls,
-                `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=movie&type=movie&y=2024&page=${newPage - 1}`,
-                `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=movie&type=movie&y=2024&page=${newPage}`,
+                `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=movie&type=movie&y=2024&page=${newPage - 1}`,
+                `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=movie&type=movie&y=2024&page=${newPage}`,
             ]);
 
             return newPage;

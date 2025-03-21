@@ -14,7 +14,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 const useLatestMovies = () => {
 
     const { data, error } = useSWR(
-        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=movie&type=movie&y=2024&page=1`,
+        `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=movie&type=movie&y=2024&page=1`,
         fetcher,
         { refreshInterval: 5000 }
     );
@@ -25,7 +25,7 @@ const useLatestMovies = () => {
         if (data?.Search) {
 
             const detailedMovies = data.Search.map((movie) =>
-                fetch(`http://www.omdbapi.com/?apikey=${VITE_API_KEY}&i=${movie.imdbID}`)
+                fetch(`https://www.omdbapi.com/?apikey=${VITE_API_KEY}&i=${movie.imdbID}`)
                     .then((res) => res.json())
                     .then((details) => ({
                         ...movie,

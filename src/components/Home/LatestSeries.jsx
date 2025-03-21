@@ -13,7 +13,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const useLatestSeries = () => {
     const { data, error } = useSWR(
-        `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2023&page=1`,
+        `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&s=series&type=series&y=2023&page=1`,
         fetcher,
         { refreshInterval: 5000 }
     );
@@ -37,7 +37,7 @@ const LatestSeries = () => {
                 const seriesWithDetails = await Promise.all(
                     series.map(async (seriesItem) => {
                         const response = await fetch(
-                            `http://www.omdbapi.com/?apikey=${VITE_API_KEY}&i=${seriesItem.imdbID}`
+                            `https://www.omdbapi.com/?apikey=${VITE_API_KEY}&i=${seriesItem.imdbID}`
                         );
                         const data = await response.json();
 

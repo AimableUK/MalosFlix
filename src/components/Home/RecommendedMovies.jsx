@@ -16,9 +16,13 @@ const RECOMMENDED_MOVIES = [
 const fetcher = (url) => fetch(url).then((res) => res.json());
 const useRecommendedMovies = () => {
     const { data, error } = useSWR(
-        RECOMMENDED_MOVIES.map((id) => `http://www.omdbapi.com/?apikey=${import.meta.env.VITE_API_KEY}&i=${id}`),
-        async (urls) => {
-            const responses = await Promise.all(urls.map(url => fetcher(url)));
+        RECOMMENDED_MOVIES.join(","), 
+        async () => {
+            const responses = await Promise.all(
+                RECOMMENDED_MOVIES.map((id) =>
+                    fetcher(`https://www.omdbapi.com/?apikey=${import.meta.env.VITE_API_KEY}&i=${id}`)
+                )
+            );
             return responses.filter(movie => movie && movie.Poster && movie.imdbID);
         }
     );
@@ -30,10 +34,10 @@ const useRecommendedMovies = () => {
     };
 };
 
+
 const RecommendedMovies = () => {
     const navigate = useNavigate();
     const { movies, loading, error } = useRecommendedMovies();
-
     if (loading)
         return (
             <div className="flex justify-center items-center h-screen">
@@ -43,7 +47,7 @@ const RecommendedMovies = () => {
 
     if (error) {
         return <p className="text-red-500 text-center">Error fetching recommended movies.
-        {JSON.stringify(error)}
+        {JSON.stringify({error})} {import.meta.env.VITE_API_KEY}
         </p>
     };
 
