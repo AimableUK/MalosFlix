@@ -130,10 +130,10 @@ const MovieDetails = () => {
         {/* Movie Details */}
         <div className="flex flex-col">
           <p className="font-Gurajada text-6xl">{movie.Title}</p>
-          <div className="flex flex-row mt-3 items-center">
-            <p className="bg-white text-black p-1 mr-3">{movie.Type}</p>
-            <p className="border ml-2 pl-2 pr-2 items-center">HD</p>
-            <p className="ml-2">{movie.Genre}</p>
+          <div className="flex flex-wrap gap-2 md:flex-row md:items-center flex-row mt-3 items-center">
+            <p className="bg-white text-black p-1 mr-3 w-fit">{movie.Type}</p>
+            <p className="border ml-2 pl-2 pr-2 items-center w-fit">HD</p>
+            <p className="ml-2 w-full md:w-auto">{movie.Genre}</p>
             <p className="flex flex-row ml-3 flex-shrink-0">
               <svg className="text-primary size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -148,7 +148,7 @@ const MovieDetails = () => {
             </p>
           </div>
 
-          <div className="flex flex-row mt-7 bg-zinc-600 rounded-lg p-3 gap-10 w-fit items-center">
+          <div className="flex flex-wrap flex-row mt-7 bg-zinc-600 rounded-lg p-3 gap-10 w-fit items-center">
             {/* Share button */}
             <div
               onClick={() => setShare(prevShare => !prevShare)}
