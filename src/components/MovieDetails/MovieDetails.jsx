@@ -148,7 +148,7 @@ const MovieDetails = () => {
             </p>
           </div>
 
-          <div className="flex flex-wrap flex-row mt-7 bg-zinc-600 rounded-lg p-3 gap-10 w-fit items-center">
+          <div className="flex flex-wrap flex-row mt-7 md:bg-zinc-600 rounded-lg p-3 gap-10 w-fit items-center">
             {/* Share button */}
             <div
               onClick={() => setShare(prevShare => !prevShare)}
