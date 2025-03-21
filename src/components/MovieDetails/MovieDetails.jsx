@@ -73,7 +73,7 @@ const MovieDetails = () => {
     navigate(`/moviedetails/${movie.imdbID}`);
   };
 
-  const movieUrl = `https://malosflix.com/movie/${movie.imdbID}`;
+  const movieUrl = `https://malos-flix.vercel.app/movie/${movie.imdbID}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(movieUrl)
