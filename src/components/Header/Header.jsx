@@ -67,14 +67,13 @@ const Header = () => {
                   />
               </form>
             </div>
-            <button className='ml-2 border-2 border-primary rounded-3xl p-2 text-sm hover:bg-primary hover:text-black hover:transition-transform ease-in-out duration-300'>SIGN IN</button>
           </div>
       </div>
 
 
       {/* Mobile heder */}
       <div className='flex md:hidden flex-col justify-center p-2 gap-3'>
-        <div className='flex flex-row justify-between items-center gap-1'>
+        <div className='flex flex-row justify-between items-center gap-2'>
 
           <div className='leftSide flex flex-row ml-2 items-center'>
             <a href='/'><img src={logo} alt="logo" className='w-10 h-10 mr-2'/></a>
@@ -104,7 +103,6 @@ const Header = () => {
                   />
               </form>
             </div>
-            <button className='ml-2 border-2 border-primary rounded-3xl p-2 text-sm hover:bg-primary hover:text-black hover:transition-transform ease-in-out duration-300'>SIGN IN</button>
           </div>
         </div>
         
