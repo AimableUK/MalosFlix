@@ -93,7 +93,7 @@ const Header = () => {
                 </svg>
               </button>
               <input
-                className="w-24 pl-8 text-primary outline-none border-2 rounded-3xl placeholder:text-primary relative border-primary bg-inherit"
+                className="mr-2 w-24 pl-8 text-primary outline-none border-2 rounded-3xl placeholder:text-primary relative border-primary bg-inherit"
                 type="text"
                 name="search"
                 id="search"
