@@ -83,25 +83,25 @@ const Header = () => {
           <div className='rightSide flex flex-row items-center'>
 
           <div className="flex flex-row items-center">
-              <form 
-                className="relative flex items-center"
-                onSubmit={handleSubmit}
-                >
-                <button type="submit" className="absolute left-2">
-                  <svg className="w-6 h-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                  </svg>
-                </button>
-                <input
-                  className="pl-10 text-primary outline-none border-2 rounded-3xl p-1 placeholder:text-primary relative border-primary bg-inherit"
-                  type="text"
-                  name="search"
-                  id="search"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-              </form>
+            <form 
+              className="relative flex items-center"
+              onSubmit={handleSubmit}
+              >
+              <button type="submit" className="absolute left-2">
+                <svg className="w-6 h-6 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+              </button>
+              <input
+                className="w-24 pl-8 text-primary outline-none border-2 rounded-3xl placeholder:text-primary relative border-primary bg-inherit"
+                type="text"
+                name="search"
+                id="search"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </form>
             </div>
           </div>
         </div>
