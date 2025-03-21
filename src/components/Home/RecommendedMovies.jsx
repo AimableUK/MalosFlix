@@ -42,7 +42,10 @@ const RecommendedMovies = () => {
             </div>
         );
 
-    if (error) return <p className="text-red-500 text-center">Error fetching recommended movies.</p>;
+    if (error) {
+        console.error({error})
+        return <p className="text-red-500 text-center">Error fetching recommended movies.</p>
+    };
 
 
     const handleMovie = (movie) => {
