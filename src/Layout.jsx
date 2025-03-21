@@ -3,11 +3,11 @@ import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import PageTitleUpdater from "./components/TitleUpdater/PageTitleUpdater";
+import LandingBg from "./assets/landingBg.jpg"
 
 const Layout = () => {
   const location = useLocation();
   const isHome = location.pathname === "/";
-  const LandingBg = new URL('./assets/LandingBg.jpg', import.meta.url).href;
 
   return (
     <div
