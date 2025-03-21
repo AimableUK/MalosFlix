@@ -19,7 +19,6 @@ const useRecommendedMovies = () => {
         RECOMMENDED_MOVIES.map((id) => `http://www.omdbapi.com/?apikey=${import.meta.env.VITE_API_KEY}&i=${id}`),
         async (urls) => {
             const responses = await Promise.all(urls.map(url => fetcher(url)));
-            console.log({responses})
             return responses.filter(movie => movie && movie.Poster && movie.imdbID);
         }
     );
@@ -43,8 +42,9 @@ const RecommendedMovies = () => {
         );
 
     if (error) {
-        console.error({error})
-        return <p className="text-red-500 text-center">Error fetching recommended movies.</p>
+        return <p className="text-red-500 text-center">Error fetching recommended movies.
+        {JSON.stringify(error)}
+        </p>
     };
 
 
