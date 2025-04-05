@@ -12,7 +12,6 @@ MalosFlix is a movie database web application that allows users to search for mo
 ## Tech Stack
 
 - **Frontend:** React, Vite, Tailwind CSS
-- **State Management:** Zustand
 - **Data Fetching:** SWR
 - **API:** OMDB API
 
@@ -42,7 +41,7 @@ npm run dev
  ### On First visit Page:
   On the homepage is where you see the recommended Movies, Latest Movies and Latest Series
 
-![Search Page](path/to/search-page.png)
+![Home Page](/RMHomePage.png)
 
  #### Search Page:
  On this page is where you may search differnt movies of your wish
