@@ -16,7 +16,7 @@ MalosFlix is a movie database web application that allows users to search for mo
 - **Data Fetching:** SWR
 - **API:** OMDB API
 
-## Installation & Setup
+## Installation
 
 1. Clone the repository:
    ```sh
@@ -24,39 +24,56 @@ MalosFlix is a movie database web application that allows users to search for mo
    cd malosflix
    ```
 
-2. Install dependencies:
-   ```sh
-   npm install
-   ```
+## Run Locally
 
-3. Create a `.env` file and add your OMDB API key:
-   ```env
-   VITE_OMDB_API_KEY=your_api_key_here
-   ```
+To run MalosFlix locally:
+```sh
+npm run dev
+```
 
-4. Start the development server:
-   ```sh
-   npm run dev
-   ```
-
-## Usage
+## Usage/Examples
 
 - **Search for movies:** Type a title and press enter.
 - **View movie details:** Click on a movie to see more info.
 - **Explore recommendations:** Scroll to find similar content.
 
-### Screenshots
+## How to Navigate Malos FLix
+
+ ### On First visit Page:
+  On the homepage is where you see the recommended Movies, Latest Movies and Latest Series
 
 ![Search Page](path/to/search-page.png)
-![Movie Details](path/to/movie-details.png)
 
-## Deployment
+ #### Search Page:
+ On this page is where you may search differnt movies of your wish
 
-To deploy on Netlify/Vercel:
-1. Push code to GitHub.
-2. Connect repository to Netlify/Vercel.
-3. Set the `VITE_OMDB_API_KEY` variable.
-4. Deploy!
+![Search Page](path/to/search-page.png)
+
+ #### Movie Page:
+ By Clicking on the movie your directed to the movie page to see its details
+
+![Search Page](path/to/search-page.png)
+
+ #### ContactUs Page:
+ On this page is where users can send us a message to be received on onur email
+
+![Search Page](path/to/search-page.png)
+
+## API Reference
+
+MalosFlix uses the [OMDB API](https://www.omdbapi.com/) to fetch movie data.
+
+## Authors
+
+- [Ukobizaba Aimable](https://ukobizaba-aimable.vercel.app/) - Developer
+
+## License
+
+This project is licensed under the MIT License.
+
+## Support
+
+For support, contact ukobizaba81@gmail.com or open an issue on GitHub.
 
 ---
 
