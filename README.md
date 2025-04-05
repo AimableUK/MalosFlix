@@ -41,22 +41,22 @@ npm run dev
  ### On First visit Page:
   On the homepage is where you see the recommended Movies, Latest Movies and Latest Series
 
-![Home Page](/RMHomePage.png)
+![Home Page](/public/RMHomePage.png)
 
  #### Search Page:
  On this page is where you may search differnt movies of your wish
 
-![Search Page](path/to/search-page.png)
+![Search Page](/public/RMSearchPage.png)
 
  #### Movie Page:
  By Clicking on the movie your directed to the movie page to see its details
 
-![Search Page](path/to/search-page.png)
+![Movie Page](/public/RMMoviePage.png)
 
  #### ContactUs Page:
  On this page is where users can send us a message to be received on onur email
 
-![Search Page](path/to/search-page.png)
+![ContactUs Page](/public/RMContactUsPage.png)
 
 ## API Reference
 
