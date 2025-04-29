@@ -4,7 +4,7 @@ import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import PageTitleUpdater from "./components/TitleUpdater/PageTitleUpdater";
 import LandingBg from "./assets/landingBg.jpg"
-import { Analytics } from "@vercel/analytics/react"
+// import { Analytics } from "@vercel/analytics/react"
 
 const Layout = () => {
   const location = useLocation();
@@ -25,7 +25,7 @@ const Layout = () => {
 
       <div className="relative z-10 text-white">
         <PageTitleUpdater />
-        <Analytics />
+        {/* <Analytics /> */}
         <Header />
         <Outlet />
         <Footer />
