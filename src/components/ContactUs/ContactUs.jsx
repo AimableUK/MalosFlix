@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { FormSubmitSchema } from "../../schema/ContactUsSchema";
-import emailjs from "emailjs-com";
+import emailjs from '@emailjs/browser';
 
 const ContactUs = () => {
 
@@ -31,10 +31,12 @@ const ContactUs = () => {
   }
 
   useEffect(() => {
+    emailjs.init("C0PbfOTEqsTy0jfs_");
     setTimeout(() => {
       setLoading(false);
     }, 100);
   }, []);
+  
 
   if (loading) {
     return (
